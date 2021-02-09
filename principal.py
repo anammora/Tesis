@@ -5,6 +5,14 @@ from Ht import Ui_MainWindow
 
 
 
+class Ht(QMainWindow):
+    def __init__(self):
+        super(Ht, self).__init__()
+        try:
+
+            self.ui = Ui_MainWindow()
+
+            self.ui.setupUi(self)
 
 
 #hola soy ana 
