@@ -1,3 +1,5 @@
+import sys
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow
 from Ht import Ui_MainWindow
@@ -12,7 +14,7 @@ class Ht(QMainWindow):
 
             self.ui.setupUi(self)
         except Exception as e:
-                pass
+                print(e)
 
 
 #hola soy ana
@@ -20,7 +22,7 @@ app = QApplication([])
 
 application = Ht()
 
-##application.show()
+application.show()
 
 sys.exit(app.exec())
 
