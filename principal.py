@@ -13,10 +13,12 @@ class Ht(QMainWindow):
             self.ui = Ui_MainWindow()
 
             self.ui.setupUi(self)
+            self.ui.dateTimeC1.dateTimeChanged.connect(self.Change2)
         except Exception as e:
                 print(e)
 
-
+    def Change2(self,CurrentDT):
+        self.ui.dateTimeC2.setMinimumDateTime(CurrentDT)
 #hola soy ana
 app = QApplication([])
 
