@@ -7,7 +7,7 @@ from Ht import Ui_MainWindow
 
 
 
-
+#hola soy ana 
 app = QApplication([])
 
 application = Ht()
