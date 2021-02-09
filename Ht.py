@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         self.dateTimeC3 = QtWidgets.QDateTimeEdit(self.centralwidget)
         self.dateTimeC3.setGeometry(QtCore.QRect(180, 210, 194, 32))
         self.dateTimeC3.setMinimumDate(QtCore.QDate(2021, 1, 1))
-        self.dateTimeC3.setCalendarPopup(False)
+        self.dateTimeC3.setCalendarPopup(True)
         self.dateTimeC3.setObjectName("dateTimeC3")
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
         self.label_5.setGeometry(QtCore.QRect(420, 70, 151, 21))
