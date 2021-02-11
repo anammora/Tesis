@@ -60,8 +60,10 @@ class Ht(QMainWindow):
     def readFile(self):
         fname = open(filename, 'r')
         Horas= fname.read().split(',')
-        dateTimeC1=QtCore.QDateTime.fromString(Horas[0],'yyyy/M/d hh:mm:ss')
-        self.ui.dateTimeC1.setDateTimext(dateTimeC1)
+        dateTime1=QtCore.QDateTime.fromString(Horas[0],'yyyy/M/d hh:mm:ss')
+        self.ui.dateTimeC1.setDateTime(dateTime1)
+        
+        
         '''
         self.ui.dateTimeC2.setDateTimext(QtCore.QDateTime.fromString(Horas[1]))
         self.ui.dateTimeC3.setDateTimext(QtCore.QDateTime.fromString(Horas[2]))
@@ -70,8 +72,7 @@ class Ht(QMainWindow):
         self.ui.dateTimeC6.setDateTimext(QtCore.QDateTime.fromString(Horas[5]))
         '''
         
-    
-#hola soy ana
+
 app = QApplication([])
 
 application = Ht()
