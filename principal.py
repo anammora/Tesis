@@ -1,28 +1,107 @@
 import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow
+from PyQt5.QtCore import QDate, QTime, QDateTime, Qt, QThread, QCoreApplication
+from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow,QPushButton
 from Ht import Ui_MainWindow
+from Remember import Ui_MainWindow as Ui_Remember
+from Inicio import Ui_MainWindow as Ui_Inicio
 
 filename = "Horas.txt"
 
+class Thread(QThread):
+    
+    def __init__(self,ui):
+        super(Thread, self).__init__()
+        self.ui=ui
+        #RemWindow=self.create_Remember_window()
+        self.Compare()
+    '''    
+    def create_Remember_window(self):
+        self.Rem = Remember()
+        RemWindow=self.Rem.show()
+        
+    
+    def Compare(self):
+                      
+        while True:
+            try:
+                QCoreApplication.processEvents()
+                datetime = QDateTime.currentDateTime()
+                
+                if (datetime.date()==self.ui.dateTimeC1.date()and
+                datetime.time().hour()==self.ui.dateTimeC1.time().hour()and
+                datetime.time().minute()==self.ui.dateTimeC1.time().minute()):
+                    
+                    #self.create_Remember_window
+                    Remember.show() 
+                    print('yes')
+                    
+            except Exception as e:
+                print(e)
+        '''
+                    
+class Inicio(QMainWindow):
+    def __init__(self):
+        super(Inicio, self).__init__()
+        self.ui = Ui_Inicio()
+        self.ui.setupUi(self)
+  
+        try:
+
+            self.ui.B_Pill.clicked.connect(self.create_Ht_window)
+            self.ui.B_Pill.clicked.connect(lambda:self.close())
+            
+        except Exception as e:
+            print(e)
+            
+    def create_Ht_window(self):
+        
+        self.Ht=Ht()
+        self.Ht.show()
+            
+        
+class Remember(QMainWindow):
+    def __init__(self):
+        super(Remember, self).__init__()
+        self.ui = Ui_Remember()
+
+        self.ui.setupUi(self)
+        
 class Ht(QMainWindow):
     def __init__(self):
         super(Ht, self).__init__()
-        self.readFile()
+        self.ui = Ui_MainWindow()
+
+        self.ui.setupUi(self)
+        Horas=self.readFile()
         try:
 
-            self.ui = Ui_MainWindow()
-
-            self.ui.setupUi(self)
+            self.ui.dateTimeC1.setMinimumDateTime(QDateTime.currentDateTime())
             self.ui.dateTimeC1.dateTimeChanged.connect(self.Change2)
             self.ui.dateTimeC2.dateTimeChanged.connect(self.Change3)
             self.ui.dateTimeC3.dateTimeChanged.connect(self.Change4)
             self.ui.dateTimeC4.dateTimeChanged.connect(self.Change5)
             self.ui.dateTimeC5.dateTimeChanged.connect(self.Change6)
+            
             self.ui.B_Save.clicked.connect(self.Save)
+            self.setDates(Horas)
+            
+            self.ui.B_Home.clicked.connect(self.create_Inicio_window)
+            self.ui.B_Home.clicked.connect(lambda:self.close())
+                   
+            #self.thread=Thread(self.ui)
+            #self.thread.start()
+            #self.th=QThread(self)
+            #self.thread.moveToThread(self.th)
+            
+            
         except Exception as e:
                 print(e)
+                
+    def create_Inicio_window(self):
+        self.Inicio=Inicio()
+        self.Inicio.show()
 
     def Change2(self,CurrentDT):
         self.ui.dateTimeC2.setMinimumDateTime(CurrentDT)
@@ -34,53 +113,60 @@ class Ht(QMainWindow):
         self.ui.dateTimeC5.setMinimumDateTime(CurrentDT)
     def Change6(self,CurrentDT):
         self.ui.dateTimeC6.setMinimumDateTime(CurrentDT)
+        
     def Save(self):
         dateTimeC1=self.ui.dateTimeC1.dateTime()
-        print(dateTimeC1.toString())
-        self.ui.dateTimeC6.setMinimumDateTime(dateTimeC1)
+        #print(dateTimeC1.toString())
         dateTimeC2=self.ui.dateTimeC2.dateTime()
-        print(dateTimeC2.toString())
         dateTimeC3=self.ui.dateTimeC3.dateTime()
-        print(dateTimeC3.toString())
         dateTimeC4=self.ui.dateTimeC4.dateTime()
-        print(dateTimeC4.toString())
         dateTimeC5=self.ui.dateTimeC5.dateTime()
-        print(dateTimeC5.toString())
         dateTimeC6=self.ui.dateTimeC6.dateTime()
-        print(dateTimeC6.toString())
         
         
         fname = open(filename, 'w')
-        fname.write(dateTimeC1.toString()+","+dateTimeC2.toString()
-                    +","+dateTimeC3.toString()
-                    +","+dateTimeC4.toString()+","+dateTimeC5.toString()
-                    +","+dateTimeC6.toString())
+        fname.write(dateTimeC1.toString(Qt.ISODate)+","+dateTimeC2.toString(Qt.ISODate)
+                    +","+dateTimeC3.toString(Qt.ISODate)
+                    +","+dateTimeC4.toString(Qt.ISODate)+","+dateTimeC5.toString(Qt.ISODate)
+                    +","+dateTimeC6.toString(Qt.ISODate))
         fname.close()
-        
+       
     def readFile(self):
         fname = open(filename, 'r')
         Horas= fname.read().split(',')
-        dateTime1=QtCore.QDateTime.fromString(Horas[0],'yyyy/M/d hh:mm:ss')
+        return Horas
+        
+    def setDates(self,Horas):
+        
+        dateTime1=QtCore.QDateTime.fromString(Horas[0],Qt.ISODate)
         self.ui.dateTimeC1.setDateTime(dateTime1)
         
+        dateTime2=QtCore.QDateTime.fromString(Horas[1],Qt.ISODate)
+        self.ui.dateTimeC2.setDateTime(dateTime2)
         
-        '''
-        self.ui.dateTimeC2.setDateTimext(QtCore.QDateTime.fromString(Horas[1]))
-        self.ui.dateTimeC3.setDateTimext(QtCore.QDateTime.fromString(Horas[2]))
-        self.ui.dateTimeC4.setDateTimext(QtCore.QDateTime.fromString(Horas[3]))
-        self.ui.dateTimeC5.setDateTimext(QtCore.QDateTime.fromString(Horas[4]))
-        self.ui.dateTimeC6.setDateTimext(QtCore.QDateTime.fromString(Horas[5]))
-        '''
+        dateTime3=QtCore.QDateTime.fromString(Horas[2],Qt.ISODate)
+        self.ui.dateTimeC3.setDateTime(dateTime3)
         
+        dateTime4=QtCore.QDateTime.fromString(Horas[3],Qt.ISODate)
+        self.ui.dateTimeC4.setDateTime(dateTime4)
+        
+        dateTime5=QtCore.QDateTime.fromString(Horas[4],Qt.ISODate)
+        self.ui.dateTimeC5.setDateTime(dateTime5)
+        
+        dateTime6=QtCore.QDateTime.fromString(Horas[5],Qt.ISODate)
+        self.ui.dateTimeC6.setDateTime(dateTime6)
+    
+
 
 app = QApplication([])
 
-application = Ht()
+application = Inicio()
 
 application.show()
 
 sys.exit(app.exec())
 
 GPIO.cleanup()
+
 
 
