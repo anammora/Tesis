@@ -7,6 +7,9 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QDate, QTime, QDateTime, Qt, QThread, QCoreApplication
+
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -141,7 +144,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "HOY ES :"))
+        self.label_2.setText(_translate("MainWindow", "HOY ES :"+ QDateTime.currentDate()))
         self.label_3.setText(_translate("MainWindow", "LA HORA ES:"))
         self.label_4.setText(_translate("MainWindow", "EMERGENCIA"))
         self.label_5.setText(_translate("MainWindow", "HORARIO DE TOMAS "))
