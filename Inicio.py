@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(20, 30, 81, 31))
+        self.label_2.setGeometry(QtCore.QRect(20, 30, 280, 31))
         font = QtGui.QFont()
         font.setPointSize(15)
         font.setBold(True)
@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(400, 30, 111, 31))
+        self.label_3.setGeometry(QtCore.QRect(400, 30, 300, 31))
         font = QtGui.QFont()
         font.setPointSize(15)
         font.setBold(True)
@@ -144,8 +144,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "HOY ES :"+ QDateTime.currentDate()))
-        self.label_3.setText(_translate("MainWindow", "LA HORA ES:"))
+        self.label_2.setText(_translate("MainWindow", "HOY ES : "+ QDate.currentDate().toString()))
+        self.label_3.setText(_translate("MainWindow", "LA HORA ES:"+ QTime.currentTime().toString()))
         self.label_4.setText(_translate("MainWindow", "EMERGENCIA"))
         self.label_5.setText(_translate("MainWindow", "HORARIO DE TOMAS "))
         self.label_6.setText(_translate("MainWindow", "FOTOS"))

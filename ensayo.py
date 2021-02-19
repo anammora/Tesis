@@ -19,9 +19,11 @@ class Thread(QThread):
     
     def __init__(self):
         super(Thread, self).__init__()
-        #self.ui=ui
+    
+        self.ui=ui
         
     def run(self):
+        Htw=Ht()
         while True:
             try:
                 datetime = QDateTime.currentDateTime()
@@ -36,6 +38,10 @@ class Thread(QThread):
                     
             except Exception as e:
                 print(e)
+    def create_Ht_window(self):
+        
+        self.Ht=Ht()
+        
     #def create_Remember_window(self):
     #    self.Rem = Remember()
     #    RemWindow=self.Rem.show()
@@ -154,8 +160,9 @@ if __name__ == '__main__':
 
     application = Inicio()
 
-    #self.thread=Thread()
-    #self.thread.start()
+    thread=Thread()
+    
+    thread.start()
     application.show()
     sys.exit(app.exec())
 
