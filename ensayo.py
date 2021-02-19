@@ -17,9 +17,9 @@ class Remember(QMainWindow):
 
 class Thread(QThread):
     
-    def __init__(self,ui):
+    def __init__(self):
         super(Thread, self).__init__()
-        self.ui=ui
+        #self.ui=ui
         
     def run(self):
         while True:
@@ -39,27 +39,7 @@ class Thread(QThread):
     #def create_Remember_window(self):
     #    self.Rem = Remember()
     #    RemWindow=self.Rem.show()
-   '''     
-    
-    def Compare(self):
-                      
-        while True:
-            try:
-                QCoreApplication.processEvents()
-                datetime = QDateTime.currentDateTime()
-                
-                if (datetime.date()==self.ui.dateTimeC1.date()and
-                datetime.time().hour()==self.ui.dateTimeC1.time().hour()and
-                datetime.time().minute()==self.ui.dateTimeC1.time().minute()):
-                    
-                    #self.create_Remember_window
-                    Remember.show() 
-                    print('yes')
-                    
-            except Exception as e:
-                print(e)
-        '''
-                    
+           
 class Inicio(QMainWindow):
     def __init__(self):
         super(Inicio, self).__init__()
@@ -174,11 +154,9 @@ app = QApplication([])
 
 application = Inicio()
 
-application.show()
-
-self.thread=Thread(self.ui)
+self.thread=Thread()
 self.thread.start()
-
+application.show()
 sys.exit(app.exec())
 
 GPIO.cleanup()
