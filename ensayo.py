@@ -148,15 +148,15 @@ class Ht(QMainWindow):
         dateTime6=QtCore.QDateTime.fromString(Horas[5],Qt.ISODate)
         self.ui.dateTimeC6.setDateTime(dateTime6)
     
+if __name__ == '__main__':
+    
+    app = QApplication([])
 
+    application = Inicio()
 
-app = QApplication([])
+    #self.thread=Thread()
+    #self.thread.start()
+    application.show()
+    sys.exit(app.exec())
 
-application = Inicio()
-
-self.thread=Thread()
-self.thread.start()
-application.show()
-sys.exit(app.exec())
-
-GPIO.cleanup()
+    GPIO.cleanup()
