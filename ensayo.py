@@ -20,8 +20,7 @@ class Thread(QThread):
     def __init__(self,ui):
         super(Thread, self).__init__()
         self.ui=ui
-        #RemWindow=self.create_Remember_window()
-        #self.Compare()
+        
     def run(self):
         while True:
             try:
@@ -31,15 +30,15 @@ class Thread(QThread):
                 datetime.time().hour()==self.ui.dateTimeC1.time().hour()and
                 datetime.time().minute()==self.ui.dateTimeC1.time().minute()):
                     
+                    self.Remember().show()
                     #self.create_Remember_window
-                    self.create_Remember_window
                     print('yes')
                     
             except Exception as e:
                 print(e)
-    def create_Remember_window(self):
-        self.Rem = Remember()
-        RemWindow=self.Rem.show()
+    #def create_Remember_window(self):
+    #    self.Rem = Remember()
+    #    RemWindow=self.Rem.show()
    '''     
     
     def Compare(self):
