@@ -7,20 +7,20 @@ from Ht import Ui_MainWindow as Ui_Ht
 from Remember import Ui_MainWindow as Ui_Remember
 from Inicio import Ui_MainWindow as Ui_Inicio
 
-
+exxit=0
 filename = "Horas.txt"
 
 class Worker(QObject):
-    
-    
-    def run(self):
+    def __init__(self):
+        super(Worker, self).__init__()
         self.Ht=Ht()
         self.Remember=Remember()
-                   
+        self.Remember.ui.B_Close.clicked.connect(lambda:self.Remember.close())
+    
+    def run(self):       
         while True:
             try:
-                #QCoreApplication.processEvents()
-                #self.Remember.ui.B_Close.clicked.connect(lambda:self.close())
+                
                 datetime = QDateTime.currentDateTime()
                 #print('curenttime '+ str(datetime.date())+' '+str(datetime.time().hour())+' '+
                       #str(datetime.time().minute())+' C1 '+str(self.Ht.ui.dateTimeC1.date())+' '+
@@ -31,11 +31,20 @@ class Worker(QObject):
                 datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()):
                     
                     #self.create_Remember_window
-                    self.Remember.show() 
+                    #self.Remember.show() 
                     print('yes')
+                    self.Remember.show()
+                    #MOTOR
                     time.sleep(60)
+                    
+                    
+                #else:
+                    #self.Remember.close()
+                
             except Exception as e:
                 print(e)
+            
+         
         
                     
 class Inicio(QMainWindow):
@@ -73,13 +82,11 @@ class Remember(QMainWindow):
         
         try:
             print('hpta')
-            #self.ui.B_Close.clicked.connect(self.exitButton())
+            
+            self.ui.B_Close.clicked.connect(self.close())
         except Exception as e:
             print(e)
             
-    def exitButton(self):
-        print('hpta2')
-        self.close()
         
 class Ht(QMainWindow):
     def __init__(self):
