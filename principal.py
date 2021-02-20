@@ -3,7 +3,7 @@ import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QTime, QDateTime, Qt, QThread, QCoreApplication
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow,QPushButton
-from Ht import Ui_MainWindow
+from Ht import Ui_MainWindow as Ui_Ht
 from Remember import Ui_MainWindow as Ui_Remember
 from Inicio import Ui_MainWindow as Ui_Inicio
 
@@ -15,18 +15,18 @@ class Thread(QThread):
         super(Thread, self).__init__()
         self.ui=ui
         #RemWindow=self.create_Remember_window()
-        self.Compare()
+        #self.Compare()
     '''    
     def create_Remember_window(self):
         self.Rem = Remember()
         RemWindow=self.Rem.show()
-        
+    '''    
     
-    def Compare(self):
+    def run(self):
                       
         while True:
             try:
-                QCoreApplication.processEvents()
+                #QCoreApplication.processEvents()
                 datetime = QDateTime.currentDateTime()
                 
                 if (datetime.date()==self.ui.dateTimeC1.date()and
@@ -34,12 +34,12 @@ class Thread(QThread):
                 datetime.time().minute()==self.ui.dateTimeC1.time().minute()):
                     
                     #self.create_Remember_window
-                    Remember.show() 
+                    Remember().show() 
                     print('yes')
                     
             except Exception as e:
                 print(e)
-        '''
+        
                     
 class Inicio(QMainWindow):
     def __init__(self):
@@ -50,7 +50,9 @@ class Inicio(QMainWindow):
         try:
 
             self.ui.B_Pill.clicked.connect(self.create_Ht_window)
-            self.ui.B_Pill.clicked.connect(lambda:self.close())
+            #self.ui.B_Pill.clicked.connect(lambda:self.close())
+            self.thread=Thread(self.ui)
+            self.thread.start()
             
         except Exception as e:
             print(e)
@@ -71,7 +73,7 @@ class Remember(QMainWindow):
 class Ht(QMainWindow):
     def __init__(self):
         super(Ht, self).__init__()
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_Ht()
 
         self.ui.setupUi(self)
         Horas=self.readFile()
@@ -85,7 +87,7 @@ class Ht(QMainWindow):
             self.ui.dateTimeC5.dateTimeChanged.connect(self.Change6)
             
             self.ui.B_Save.clicked.connect(self.Save)
-            self.setDates(Horas)
+            #self.setDates(Horas)
             
             self.ui.B_Home.clicked.connect(self.create_Inicio_window)
             self.ui.B_Home.clicked.connect(lambda:self.close())

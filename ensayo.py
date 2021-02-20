@@ -8,6 +8,7 @@ from Remember import Ui_MainWindow as Ui_Remember
 from Inicio import Ui_MainWindow as Ui_Inicio
 
 filename = "Horas.txt"
+Compare=False
 
 class Remember(QMainWindow):
     def __init__(self):
@@ -19,18 +20,18 @@ class Thread(QThread):
     
     def __init__(self):
         super(Thread, self).__init__()
-    
         self.ui=ui
         
     def run(self):
-        Htw=Ht()
+        self.Ht=Ht()
+        print (Ht())
         while True:
             try:
                 datetime = QDateTime.currentDateTime()
                 
-                if (datetime.date()==self.ui.dateTimeC1.date()and
-                datetime.time().hour()==self.ui.dateTimeC1.time().hour()and
-                datetime.time().minute()==self.ui.dateTimeC1.time().minute()):
+                if (datetime.date()==Ht().dateTimeC1.date()and
+                datetime.time().hour()==Ht().dateTimeC1.time().hour()and
+                datetime.time().minute()==Ht().dateTimeC1.time().minute()):
                     
                     self.Remember().show()
                     #self.create_Remember_window
@@ -45,7 +46,7 @@ class Thread(QThread):
     #def create_Remember_window(self):
     #    self.Rem = Remember()
     #    RemWindow=self.Rem.show()
-           
+          
 class Inicio(QMainWindow):
     def __init__(self):
         super(Inicio, self).__init__()
@@ -128,7 +129,7 @@ class Ht(QMainWindow):
                     +","+dateTimeC4.toString(Qt.ISODate)+","+dateTimeC5.toString(Qt.ISODate)
                     +","+dateTimeC6.toString(Qt.ISODate))
         fname.close()
-       
+        
     def readFile(self):
         fname = open(filename, 'r')
         Horas= fname.read().split(',')
@@ -153,17 +154,66 @@ class Ht(QMainWindow):
         
         dateTime6=QtCore.QDateTime.fromString(Horas[5],Qt.ISODate)
         self.ui.dateTimeC6.setDateTime(dateTime6)
+        
+def readDateTime():
+        fname = open(filename, 'r')
+        DateTime= fname.read().split(',')
+        return DateTime
+    
+def CompareDateTime(DateTime):
+    dateTime1=QtCore.QDateTime.fromString(DateTime[0],Qt.ISODate)
+    dateTime2=QtCore.QDateTime.fromString(DateTime[1],Qt.ISODate)
+    dateTime3=QtCore.QDateTime.fromString(DateTime[2],Qt.ISODate)
+    dateTime4=QtCore.QDateTime.fromString(DateTime[3],Qt.ISODate)
+    dateTime5=QtCore.QDateTime.fromString(DateTime[4],Qt.ISODate)
+    dateTime6=QtCore.QDateTime.fromString(DateTime[5],Qt.ISODate)
+    datetimeCurrent = QDateTime.currentDateTime()
+    
+    if (datetimeCurrent.date()==dateTime1.date()and
+    datetimeCurrent.time().hour()==dateTime1.time().hour()and
+    datetimeCurrent.time().minute()==dateTime1.time().minute()):
+        Compare=True
+    else:
+        Compare=False            
+                
+    return Compare 
+     
+        
+        
     
 if __name__ == '__main__':
     
     app = QApplication([])
 
     application = Inicio()
-
-    thread=Thread()
     
-    thread.start()
     application.show()
-    sys.exit(app.exec())
 
-    GPIO.cleanup()
+    #thread=Thread()
+    
+    #thread.start()
+
+    DateTime=readDateTime()
+    print(CompareDateTime(DateTime))
+    
+    while True:
+        
+        try:
+            application.show()
+        
+            
+            #if CompareDateTime(DateTime):
+                    #Remember().show()
+                
+            print('hello')
+        except Exception as e:
+                print(e) 
+            
+                    
+    
+            
+    sys.exit(app.exec())
+    
+    
+
+    #GPIO.cleanup()
