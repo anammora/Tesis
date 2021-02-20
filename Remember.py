@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.B_Close.setFont(font)
         self.B_Close.setObjectName("B_Close")
+        self.B_Close.clicked.connect(MainWindow.close)
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(90, 50, 211, 41))
         font = QtGui.QFont()

@@ -1,5 +1,5 @@
 import sys
-
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow,QPushButton
@@ -7,27 +7,33 @@ from Ht import Ui_MainWindow as Ui_Ht
 from Remember import Ui_MainWindow as Ui_Remember
 from Inicio import Ui_MainWindow as Ui_Inicio
 
+
 filename = "Horas.txt"
 
 class Worker(QObject):
     
     
     def run(self):
-        self.Ht=Ht() 
-        self.Ht.setupUi(self)             
+        self.Ht=Ht()
+        self.Remember=Remember()
+                   
         while True:
             try:
                 #QCoreApplication.processEvents()
+                #self.Remember.ui.B_Close.clicked.connect(lambda:self.close())
                 datetime = QDateTime.currentDateTime()
-                
-                if (datetime.date()==self.Ht.dateTimeC1.date()and
-                datetime.time().hour()==self.Ht.dateTimeC1.time().hour()and
-                datetime.time().minute()==self.Ht.dateTimeC1.time().minute()):
+                #print('curenttime '+ str(datetime.date())+' '+str(datetime.time().hour())+' '+
+                      #str(datetime.time().minute())+' C1 '+str(self.Ht.ui.dateTimeC1.date())+' '+
+                      #str(self.Ht.ui.dateTimeC1.time().hour())+' '+
+                      #str(self.Ht.ui.dateTimeC1.time().minute()))
+                if (datetime.date()==self.Ht.ui.dateTimeC1.date()and
+                datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
+                datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()):
                     
                     #self.create_Remember_window
-                    Remember().show() 
+                    self.Remember.show() 
                     print('yes')
-                    
+                    time.sleep(60)
             except Exception as e:
                 print(e)
         
@@ -45,6 +51,7 @@ class Inicio(QMainWindow):
             self.thread=QThread()
             self.worker = Worker()
             self.worker.moveToThread(self.thread)
+            self.thread.started.connect(self.worker.run)
             self.thread.start()
             
         except Exception as e:
@@ -54,6 +61,7 @@ class Inicio(QMainWindow):
         
         self.Ht=Ht()
         self.Ht.show()
+    
             
         
 class Remember(QMainWindow):
@@ -62,6 +70,16 @@ class Remember(QMainWindow):
         self.ui = Ui_Remember()
 
         self.ui.setupUi(self)
+        
+        try:
+            print('hpta')
+            #self.ui.B_Close.clicked.connect(self.exitButton())
+        except Exception as e:
+            print(e)
+            
+    def exitButton(self):
+        print('hpta2')
+        self.close()
         
 class Ht(QMainWindow):
     def __init__(self):
