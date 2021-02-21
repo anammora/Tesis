@@ -6,9 +6,12 @@ from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow,QPushButt
 from Ht import Ui_MainWindow as Ui_Ht
 from Remember import Ui_MainWindow as Ui_Remember
 from Inicio import Ui_MainWindow as Ui_Inicio
+from Ht_pin import Ui_MainWindow as Ui_HtPin
 
 exxit=0
 filename = "Horas.txt"
+PinFile="PinFile.txt"
+
 
 class Worker(QObject):
     def __init__(self):
@@ -30,17 +33,11 @@ class Worker(QObject):
                 datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()):
                     
-                    #self.create_Remember_window
-                    #self.Remember.show() 
                     print('yes')
                     self.Remember.show()
                     #MOTOR
                     time.sleep(60)
-                    
-                    
-                #else:
-                    #self.Remember.close()
-                
+               
             except Exception as e:
                 print(e)
             
@@ -55,7 +52,7 @@ class Inicio(QMainWindow):
   
         try:
 
-            self.ui.B_Pill.clicked.connect(self.create_Ht_window)
+            self.ui.B_Pill.clicked.connect(self.create_HtPin_window)
             #self.ui.B_Pill.clicked.connect(lambda:self.close())
             self.thread=QThread()
             self.worker = Worker()
@@ -70,8 +67,40 @@ class Inicio(QMainWindow):
         
         self.Ht=Ht()
         self.Ht.show()
-    
+        
+    def create_HtPin_window(self):
+        
+        self.Ht_pin=Ht_pin()
+        self.Ht_pin.show()
+        
+class Ht_pin(QMainWindow):
+    def __init__(self):
+        super(Ht_pin, self).__init__()
+        self.ui = Ui_HtPin()
+
+        self.ui.setupUi(self)
+        self.label = QLabel("",self)
+        self.label.setGeometry(340, 300, 200, 25)
+        self.ui.B_Loggin.clicked.connect(lambda:self.Compare())
+        
+    def Compare(self):
+        fname = open(PinFile, 'r')
+        Pin= fname.read()
+        print(Pin)
+        if str(self.ui.lineEdit.text())==Pin:
+            print('otra vez este hpta')
+            self.close()
+            self.create_Ht_window()
             
+        else:
+            self.label.setText("Asi no era")
+            self.ui.lineEdit.clear()
+            
+            
+    def create_Ht_window(self):
+        
+        self.Ht=Ht()
+        self.Ht.show()    
         
 class Remember(QMainWindow):
     def __init__(self):
