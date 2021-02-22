@@ -138,11 +138,6 @@ class Ht(QMainWindow):
             
             self.ui.B_Home.clicked.connect(self.create_Inicio_window)
             self.ui.B_Home.clicked.connect(lambda:self.close())
-                   
-            #self.thread=Thread(self.ui)
-            #self.thread.start()
-            #self.th=QThread(self)
-            #self.thread.moveToThread(self.th)
             
             
         except Exception as e:

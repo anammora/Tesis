@@ -8,13 +8,15 @@ root.geometry('500x300')
 pygame.mixer.init()
 
 def anadir():
-    canciones=filedialog.askopenfilenames(initialdir='/',title='Elige cancion', filetypes=(('mp3','*.mp3'),('all files','*.*')))
+    canciones=filedialog.askopenfilenames(initialdir='/',title='Elige cancion',
+                                          filetypes=(('mp3','*.mp3'),('all files','*.*')))
 
     for cancion in canciones:
-        cancion=cancion.replace('F:/MUSICA','') 
-        cancion=cancion.replace('.mp3','')
+        cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
+        cancion=cancion.replace(".mp3","")
 
         pantalla.insert(END, cancion)
+        
 def play():
     cancion=pantalla.get(ACTIVE)
     cancion= f'{cancion}.mp3'
@@ -91,28 +93,28 @@ anterior=Button(botones,text='Anterior',command=anterior)
 anterior.grid(row=0,column=0)
 
 reproducir=Button(botones,text='Reproducir',command=play)
-anterior.grid(row=0,column=1)
+reproducir.grid(row=0,column=1)
 
 pausa=Button(botones,text='Pausa',command=lambda:pause(paused))
 pausa.grid(row=0,column=2)
 
 detener=Button(botones,text='Detener',command=stop)
-anterior.grid(row=0,column=3)
+detener.grid(row=0,column=3)
 
 siguiente=Button(botones,text='Siguiente',command=siguiente)
-anterior.grid(row=0,column=4)
+siguiente.grid(row=0,column=4)
 
 menubar=Menu(root)
 root.config(menu=menubar)
 
 anadir_cancion=Menu(menubar)
-menubar.add_cascade(Label='Anadir cancion',menu=anadir_cancion)
-anadir_cancion.add_command(Label='Anadir una o mas canciones',command=anadir)
+menubar.add_cascade(label="Anadir cancion",menu=anadir_cancion)
+anadir_cancion.add_command(label="Anadir una o mas canciones",command=anadir)
 
 remover=Menu(menubar)
-menubar.add_cascade(Label='Borrar Canciones',menu=remover)
-menubar.add_command(Label='Borrar una cacnion de la pantalla',menu=borrar1)
-menubar.add_command(Label='Borrar todas las Canciones',menu=borrar_todas)
+menubar.add_cascade(label="Borrar Canciones",menu=remover)
+remover.add_command(label="Borrar una cacnion de la pantall",command=borrar1)
+remover.add_command(label="Borrar todas las Canciones",command=borrar_todas)
     
 root.mainloop()
 
