@@ -16,13 +16,13 @@ def anadir():
         cancion=cancion.replace(".mp3","")
 
         pantalla.insert(END, cancion)
-        
+      
 def play():
     cancion=pantalla.get(ACTIVE)
     cancion= f'{cancion}.mp3'
 
-    pygame.mixer.music.load(cancion)
-    pygame.mixer.music.play(Loops=0)
+    pygame.mixer.music.load("/home/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
+    pygame.mixer.music.play(loops=0)
 
 def stop():
     pygame.mixer.music.stop()
@@ -35,7 +35,7 @@ def siguiente():
     cancion=f'{cancion}.mp3'
 
     pygame.mixer.music.load(cancion)
-    pygame.mixer.music.play(Loops=0)
+    pygame.mixer.music.play(loops=0)
 
     pantalla.selection_clear(0,END)
 
@@ -51,7 +51,7 @@ def anterior():
     cancion=f'{cancion}.mp3'
 
     pygame.mixer.music.load(cancion)
-    pygame.mixer.music.play(Loops=0)
+    pygame.mixer.music.play(loops=0)
 
     pantalla.selection_clear(0,END)
 
