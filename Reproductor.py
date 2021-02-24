@@ -70,8 +70,9 @@ def anterior():
 global paused
 paused=False
 
-def pause(paused):
-    #paused=is_paused
+def pause(is_paused):
+    
+    paused=is_paused
     
     if (paused):
         print('chao')
