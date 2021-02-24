@@ -24,8 +24,8 @@ def play():
     cancion=pantalla.get(ACTIVE)
     cancion= f'/media/pi/MORAMO/MUSICA/{cancion}.mp3'
     #print (cancion)
-    #pygame.mixer.music.load(cancion)
-    pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
+    pygame.mixer.music.load(cancion)
+    #pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
     pygame.mixer.music.play(loops=0)
 
 def stop():
@@ -34,10 +34,7 @@ def stop():
 
 def siguiente():
     proxima=pantalla.curselection()
-    if proxima[0]+1=='/media/pi/MORAMO/MUSICA/.mp3':
-        proxima=proxima[0]+0
-    else:
-        proxima=proxima[0]+1
+    proxima=proxima[0]+1
     cancion=pantalla.get(proxima)
     cancion=f'/media/pi/MORAMO/MUSICA/{cancion}.mp3'
 
@@ -65,22 +62,20 @@ def anterior():
     pantalla.activate(proxima)
 
     last=None
-    pantalla.seleccion_set(proxima,last)
+    pantalla.selection_set(proxima,last)
     
 global paused
 paused=False
 
 def pause(is_paused):
+    global paused
+    is_paused=paused
     
-    paused=is_paused
-    
-    if (paused):
-        print('chao')
+    if paused:
         pygame.mixer.music.unpause()
         paused=False
         
     else:
-        print('hola')
         pygame.mixer.music.pause()
         paused=True
         
