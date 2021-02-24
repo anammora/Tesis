@@ -77,12 +77,13 @@ def pause(is_paused):
     if (paused):
         print('chao')
         pygame.mixer.music.unpause()
-        pause=False
+        paused=False
         
     else:
         print('hola')
         pygame.mixer.music.pause()
-        pause=True
+        paused=True
+        
 
 def borrar1():
     pantalla.delete(ANCHOR)
