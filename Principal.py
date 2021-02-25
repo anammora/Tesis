@@ -60,6 +60,7 @@ class Inicio(QMainWindow):
             self.thread.started.connect(self.worker.run)
             self.thread.start()
             
+            
         except Exception as e:
             print(e)
             
