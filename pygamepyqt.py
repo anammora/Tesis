@@ -25,7 +25,7 @@ class Window(QWidget):
         v_box.addLayout(h_box)
         self.setLayout(v_box)
         self.setWindowTitle("Song Mixer 1.0")
-
+        ######################################################################3 
         self.song1.clicked.connect(self.song1_open)
         self.pause.clicked.connect(self.pause_the_songs)            
         self.play_it.clicked.connect(self.play_the_songs)

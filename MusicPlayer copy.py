@@ -8,9 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtMultimedia as M
-import pygame  
-                                                   # +++
-pygame.mixer.init()
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -120,45 +117,22 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "MUSICA"))
-        self.B_Home.clicked.connect(self.anadir)
-        self.B_Pause.clicked.connect(self.pause)            
-        self.B_Play.connect(self.play)
-
-    def anadir():
-    canciones=filedialog.askopenfilenames(initialdir='/media/pi/MORAMO/MUSICA/',
-                                          title='Elige cancion',
-                                          filetypes=[('mp3','*.mp3'),
-                                                     ('all files','*.*')])
-
-    for cancion in canciones:
-        cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
-        cancion=cancion.replace(".mp3","")
-
-        pantalla.insert(END, cancion)
-      
-    def play():
-        cancion=pantalla.get(ACTIVE)
-        cancion= f'/media/pi/MORAMO/MUSICA/{cancion}.mp3'
-        #print (cancion)
-        pygame.mixer.music.load(cancion)
-        #pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
-        pygame.mixer.music.play(loops=0) 
-
-    global paused
-    paused=False
-
-    def pause(is_paused):
-        global paused
-        is_paused=paused
+        self.B_Play.clicked.connect(self.play)
+        self.B_Pause.clicked.connect(self.pause)
+        filename='Camilo - Vida de Rico.mp3'
+        fullpath = QtCore.QDir.current().absoluteFilePath(filename) 
+        self.url=QtCore.QUrl.fromLocalFile(fullpath)
+        self.content=M.QMediaContent(self.url)
+        self.player=M.QMediaPlayer()
+        self.player.setMedia(self.content)
         
-        if paused:
-            pygame.mixer.music.unpause()
-            paused=False
-            
-        else:
-            pygame.mixer.music.pause()
-            paused=True   
-
+    def play(self):
+        print('play')
+        self.player.play()
+        
+    def pause(self):
+        print('pause')
+        self.player.pause()
 
 if __name__ == "__main__":
     import sys
