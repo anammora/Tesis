@@ -7,15 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-#from PyQt5.QtMultimedia import (QAbstractVideoBuffer, QMediaContent,
-        #QMediaMetaData, QMediaPlayer, QMediaPlaylist, QVideoFrame, QVideoProbe)
+from PyQt5.QtMultimedia import (QAbstractVideoBuffer, QMediaContent,
+        QMediaMetaData, QMediaPlayer, QMediaPlaylist, QVideoFrame, QVideoProbe)
 
-#from PyQt5.QtWidgets import (QWidget,QApplication,QPushButton,
-                             #QVBoxLayout,QFileDialog,QHBoxLayout)
+from PyQt5.QtWidgets import (QWidget,QApplication,QPushButton,
+                             QVBoxLayout,QFileDialog,QHBoxLayout)
 
-#import pygame  
+import pygame  
                                                    # +++
-#pygame.mixer.init()
+pygame.mixer.init()
 
 class Ui_MainWindow(QWidget):
     def setupUi(self, MainWindow):
@@ -124,12 +124,8 @@ class Ui_MainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "MUSICA"))
-'''
-        #self.B_Play = None
-        self.playerState = QMediaPlayer.StoppedState
-        #self.B_Pause = None 
         self.B_Home.clicked.connect(self.anadir)
-        self.B_Pause.clicked.connect(self.setState)            
+        #self.B_Pause.clicked.connect(self.setState)            
         self.B_Play.clicked.connect(self.setState)
         
     
@@ -148,12 +144,12 @@ class Ui_MainWindow(QWidget):
         pygame.mixer.music.load(self.data)
         #pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
         pygame.mixer.music.play(loops=0)
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap("IMG/pause-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.B_Play.setIcon(icon7)
+        #icon7 = QtGui.QIcon()
+        #icon7.addPixmap(QtGui.QPixmap("IMG/pause-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.B_Play.setIcon(icon7)
         
 
-        
+'''        
         if self.B_Play is None:
             self.B_Play.setIcon(QtGui.QIcon( QtGui.QPixmap("IMG/pause-button.png")))
             self.B_Play = "pause"
