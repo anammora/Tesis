@@ -122,19 +122,18 @@ class Ui_MainWindow(object):
         self.label_2.setText(_translate("MainWindow", "MUSICA"))
         self.B_Home.clicked.connect(self.anadir)
         self.B_Pause.clicked.connect(self.pause)            
-        self.B_Play.connect(self.play)
+        self.B_Play.clicked.connect(self.play)
 
     def anadir():
-    canciones=filedialog.askopenfilenames(initialdir='/media/pi/MORAMO/MUSICA/',
+        canciones=filedialog.askopenfilenames(initialdir='/media/pi/MORAMO/MUSICA/',
                                           title='Elige cancion',
                                           filetypes=[('mp3','*.mp3'),
                                                      ('all files','*.*')])
 
-    for cancion in canciones:
-        cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
-        cancion=cancion.replace(".mp3","")
+        for cancion in canciones:
+            cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
+            cancion=cancion.replace(".mp3","")
 
-        pantalla.insert(END, cancion)
       
     def play():
         cancion=pantalla.get(ACTIVE)

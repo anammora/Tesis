@@ -16,10 +16,10 @@ class Window(QWidget):
     def init_ui(self):
         self.song1 = QPushButton("LoadingSound")
         self.pause = QPushButton("Pause")
-        self.play_it = QPushButton("Play")
+        self.playsound = QPushButton("Play")
         h_box = QHBoxLayout()
         h_box.addWidget(self.song1)
-        h_box.addWidget(self.play_it)
+        h_box.addWidget(self.playsound)
         h_box.addWidget(self.pause)
         v_box = QVBoxLayout()
         v_box.addLayout(h_box)
@@ -28,12 +28,13 @@ class Window(QWidget):
         ######################################################################3 
         self.song1.clicked.connect(self.song1_open)
         self.pause.clicked.connect(self.pause_the_songs)            
-        self.play_it.clicked.connect(self.play_the_songs)
+        self.playsound.clicked.connect(self.play_the_songs)
 
         self.show()
 
     def pause_the_songs(self):
         if self.playsound is None:
+            print("esta aqui")
             self.pause.setText("UnPause")
             self.playsound = "pause"
             pygame.mixer.music.pause()
