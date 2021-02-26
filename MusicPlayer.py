@@ -133,12 +133,14 @@ class Ui_MainWindow(QWidget):
 
     def anadir(self):
         
-        cancion= QFileDialog.getOpenFileName(self,
+        canciones= QFileDialog.getOpenFileNames(self,
                                               str('Open'),
                                               str('/media/pi/MORAMO/MUSICA/'),
                                               str('Music(*.mp3)'))
-        self.data = cancion[0]
-        
+        for cancion in canciones:
+            self.data = cancion
+            cancion=cancion[0].replace("/media/pi/MORAMO/MUSICA/","") 
+            self.SongName.setText(str(cancion))
       
     def play(self):
         self.B_Play=pygame.mixer.init()  
@@ -148,6 +150,7 @@ class Ui_MainWindow(QWidget):
         #icon7 = QtGui.QIcon()
         #icon7.addPixmap(QtGui.QPixmap("IMG/pause-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #self.B_Play.setIcon(icon7)
+        
     global paused
     paused=False
     def pause(self,is_paused):
