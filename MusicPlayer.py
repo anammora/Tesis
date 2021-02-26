@@ -7,15 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtMultimedia import (QAbstractVideoBuffer, QMediaContent,
-        QMediaMetaData, QMediaPlayer, QMediaPlaylist, QVideoFrame, QVideoProbe)
+#from PyQt5.QtMultimedia import (QAbstractVideoBuffer, QMediaContent,
+        #QMediaMetaData, QMediaPlayer, QMediaPlaylist, QVideoFrame, QVideoProbe)
 
-from PyQt5.QtWidgets import (QWidget,QApplication,QPushButton,
-                             QVBoxLayout,QFileDialog,QHBoxLayout)
+#from PyQt5.QtWidgets import (QWidget,QApplication,QPushButton,
+                             #QVBoxLayout,QFileDialog,QHBoxLayout)
 
-import pygame  
+#import pygame  
                                                    # +++
-pygame.mixer.init()
+#pygame.mixer.init()
 
 class Ui_MainWindow(QWidget):
     def setupUi(self, MainWindow):
@@ -115,7 +115,7 @@ class Ui_MainWindow(QWidget):
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
-        #self.B_Play = None                                     # ++self.B_Pause= None 
+        
         MainWindow.setStatusBar(self.statusbar)
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -124,6 +124,7 @@ class Ui_MainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "MUSICA"))
+'''
         #self.B_Play = None
         self.playerState = QMediaPlayer.StoppedState
         #self.B_Pause = None 
@@ -151,7 +152,7 @@ class Ui_MainWindow(QWidget):
         icon7.addPixmap(QtGui.QPixmap("IMG/pause-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.B_Play.setIcon(icon7)
         
-'''
+
         
         if self.B_Play is None:
             self.B_Play.setIcon(QtGui.QIcon( QtGui.QPixmap("IMG/pause-button.png")))
