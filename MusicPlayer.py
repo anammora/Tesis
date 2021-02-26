@@ -163,6 +163,7 @@ class Ui_MainWindow(QWidget):
             pygame.mixer.music.unpause()
         
 '''
+
 if __name__ == "__main__":
     import sys,os
     app = QtWidgets.QApplication(sys.argv)
