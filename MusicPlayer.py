@@ -134,14 +134,15 @@ class Ui_MainWindow(QWidget):
 
     def anadir(self):
         
-        cancion= QFileDialog.getOpenFileName(self,
+        canciones= QFileDialog.getOpenFileNames(self,
                                               str('Open'),
                                               str('/media/pi/MORAMO/MUSICA/'),
                                               str('Music(*.mp3)'))
-        
-        self.data = cancion[0]
-        cancion=cancion[0].replace("/media/pi/MORAMO/MUSICA/","") 
-        self.SongName.setText(str(cancion))
+        for cancion in canciones
+            self.data = cancion
+            cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
+            cancion=cancion.replace(".mp3","") 
+            self.SongName.setText(str(cancion))
       
     def play(self):
         self.B_Play=pygame.mixer.init()  
