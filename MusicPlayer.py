@@ -7,12 +7,17 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5 import QtMultimedia
+from PyQt5.QtMultimedia import (QAbstractVideoBuffer, QMediaContent,
+        QMediaMetaData, QMediaPlayer, QMediaPlaylist, QVideoFrame, QVideoProbe)
+
+from PyQt5.QtWidgets import (QWidget,QApplication,QPushButton,
+                             QVBoxLayout,QFileDialog,QHBoxLayout)
+
 import pygame  
                                                    # +++
 pygame.mixer.init()
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QWidget):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 480)
@@ -110,49 +115,56 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
+        #self.B_Play = None                                     # ++self.B_Pause= None 
         MainWindow.setStatusBar(self.statusbar)
-        
-
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "MUSICA")
-        self.B_Play = None                                     # +++
-        self.B_Pause= None 
+        self.label_2.setText(_translate("MainWindow", "MUSICA"))
+        #self.B_Play = None
+        self.playerState = QMediaPlayer.StoppedState
+        #self.B_Pause = None 
         self.B_Home.clicked.connect(self.anadir)
-        self.B_Pause.clicked.connect(self.State)            
-        self.B_Play.connect(self.State)
+        self.B_Pause.clicked.connect(self.setState)            
+        self.B_Play.clicked.connect(self.setState)
+        
+    
 
-    def anadir():
-        cancion = QFileDialog.getOpenFileNames(self,"Open","/media/pi/MORAMO/MUSICA/","Music (*.mp3)")
+    def anadir(self):
+        
+        cancion= QFileDialog.getOpenFileName(self,
+                                              str('Open'),
+                                              str('/media/pi/MORAMO/MUSICA/'),
+                                              str('Music(*.mp3)'))
         self.data = cancion[0]
+        
       
-    def State():
+    def setState(self,state):
         self.B_Play=pygame.mixer.init()  
         pygame.mixer.music.load(self.data)
         #pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
-        pygame.mixer.music.play(loops=0) 
+        pygame.mixer.music.play(loops=0)
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap("IMG/pause-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.B_Play.setIcon(icon7)
+        
+'''
+        
         if self.B_Play is None:
-
-            self.B_Play.setIcon(QIcon("IMG/pause-button.png"))
+            self.B_Play.setIcon(QtGui.QIcon( QtGui.QPixmap("IMG/pause-button.png")))
             self.B_Play = "pause"
             pygame.mixer.music.pause()
         else:
             self.B_Play.setIcon(QIcon("IMG/play.png"))
             self.B_Play =None
             pygame.mixer.music.unpause()
-
-
         
-
-
-
-
+'''
 if __name__ == "__main__":
-    import sys
+    import sys,os
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
