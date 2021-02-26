@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5 import QtMultimedia as M
+from PyQt5 import QtMultimedia
 import pygame  
                                                    # +++
 pygame.mixer.init()
@@ -119,45 +119,36 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "MUSICA"))
+        self.label_2.setText(_translate("MainWindow", "MUSICA")
+        self.B_Play = None                                     # +++
+        self.B_Pause     = None 
         self.B_Home.clicked.connect(self.anadir)
-        self.B_Pause.clicked.connect(self.pause)            
-        self.B_Play.connect(self.play)
+        self.B_Pause.clicked.connect(self.State)            
+        self.B_Play.connect(self.State)
 
     def anadir():
-    canciones=filedialog.askopenfilenames(initialdir='/media/pi/MORAMO/MUSICA/',
-                                          title='Elige cancion',
-                                          filetypes=[('mp3','*.mp3'),
-                                                     ('all files','*.*')])
-
-    for cancion in canciones:
-        cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
-        cancion=cancion.replace(".mp3","")
-
-        pantalla.insert(END, cancion)
+        cancion = QFileDialog.getOpenFileNames(self,"Open","/media/pi/MORAMO/MUSICA/","Music (*.mp3)")
+        self.data = cancion[0]
       
-    def play():
-        cancion=pantalla.get(ACTIVE)
-        cancion= f'/media/pi/MORAMO/MUSICA/{cancion}.mp3'
-        #print (cancion)
-        pygame.mixer.music.load(cancion)
+    def State():
+        self.B_Play=pygame.mixer.init()  
+        pygame.mixer.music.load(self.data)
         #pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
         pygame.mixer.music.play(loops=0) 
+        if self.B_Play is None:
 
-    global paused
-    paused=False
-
-    def pause(is_paused):
-        global paused
-        is_paused=paused
-        
-        if paused:
-            pygame.mixer.music.unpause()
-            paused=False
-            
-        else:
+            self.B_Play.setIcon(QIcon("IMG/pause-button.png"))
+            self.B_Play = "pause"
             pygame.mixer.music.pause()
-            paused=True   
+        else:
+            self.B_Play.setIcon(QIcon("IMG/play.png"))
+            self.B_Play =None
+            pygame.mixer.music.unpause()
+
+
+        
+
+
 
 
 if __name__ == "__main__":
