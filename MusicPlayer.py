@@ -124,9 +124,9 @@ class Ui_MainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label_2.setText(_translate("MainWindow", "MUSICA"))
-        self.B_Home.clicked.connect(self.anadir)
-        #self.B_Pause.clicked.connect(self.setState)            
-        self.B_Play.clicked.connect(self.setState)
+        self.B_Home.clicked.connect(self.anadir)         
+        self.B_Play.clicked.connect(self.play)
+        self.B_Pause.clicked.connect(lambda:self.pause(paused))   
         
     
 
@@ -139,7 +139,7 @@ class Ui_MainWindow(QWidget):
         self.data = cancion[0]
         
       
-    def setState(self,state):
+    def play(self):
         self.B_Play=pygame.mixer.init()  
         pygame.mixer.music.load(self.data)
         #pygame.mixer.music.load("/media/pi/MORAMO/MUSICA/Camilo-Ropa Cara.mp3")
@@ -147,6 +147,20 @@ class Ui_MainWindow(QWidget):
         #icon7 = QtGui.QIcon()
         #icon7.addPixmap(QtGui.QPixmap("IMG/pause-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         #self.B_Play.setIcon(icon7)
+    global paused
+    paused=False
+    def pause(self,is_paused):
+        global paused
+        is_paused=paused
+        
+        if paused:
+            pygame.mixer.music.unpause()
+            paused=False
+            
+        else:
+            pygame.mixer.music.pause()
+            paused=True
+
         
 
 '''        
