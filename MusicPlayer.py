@@ -145,12 +145,6 @@ class Ui_MainWindow(object):
             self.B_Play =None
             pygame.mixer.music.unpause()
 
-
-        
-
-
-
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
