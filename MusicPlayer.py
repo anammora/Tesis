@@ -63,14 +63,14 @@ class Ui_MainWindow(QWidget):
         self.B_Pause.setIcon(icon2)
         self.B_Pause.setIconSize(QtCore.QSize(90, 90))
         self.B_Pause.setObjectName("B_Pause")
-        self.B_NoSound = QtWidgets.QPushButton(self.centralwidget)
-        self.B_NoSound.setGeometry(QtCore.QRect(400, 270, 110, 110))
-        self.B_NoSound.setText("")
+        self.B_Mute = QtWidgets.QPushButton(self.centralwidget)
+        self.B_Mute.setGeometry(QtCore.QRect(400, 270, 110, 110))
+        self.B_Mute.setText("")
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("IMG/no-sound.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.B_NoSound.setIcon(icon3)
-        self.B_NoSound.setIconSize(QtCore.QSize(90, 90))
-        self.B_NoSound.setObjectName("B_NoSound")
+        self.B_Mute.setIcon(icon3)
+        self.B_Mute.setIconSize(QtCore.QSize(90, 90))
+        self.B_Mute.setObjectName("B_Mute")
         self.B_Back = QtWidgets.QPushButton(self.centralwidget)
         self.B_Back.setGeometry(QtCore.QRect(520, 270, 110, 110))
         self.B_Back.setText("")
@@ -103,7 +103,7 @@ class Ui_MainWindow(QWidget):
         self.B_Sound.raise_()
         self.B_Play.raise_()
         self.B_Pause.raise_()
-        self.B_NoSound.raise_()
+        self.B_Mute.raise_()
         self.B_Back.raise_()
         self.B_Next.raise_()
         self.label_2.raise_()
@@ -128,7 +128,8 @@ class Ui_MainWindow(QWidget):
         self.B_Home.clicked.connect(self.anadir)         
         self.B_Play.clicked.connect(self.play)
         self.B_Pause.clicked.connect(lambda:self.pause(paused))   
-        
+        self.B_Sound.clicked.connect(self.volume)
+        self.B_Mute.clicked.connect(self.NoVolume)
     
 
     def anadir(self):
@@ -164,6 +165,12 @@ class Ui_MainWindow(QWidget):
         else:
             pygame.mixer.music.pause()
             paused=True
+
+    def NoVolume(self):
+        pygame.mixer.music.set_volume(0.1)
+
+    def volume(self):
+        pygame.mixer.music.set_volume(1.0)
 
         
 
