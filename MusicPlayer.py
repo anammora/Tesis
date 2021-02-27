@@ -96,7 +96,7 @@ class Ui_MainWindow(QWidget):
         self.B_Home.setIconSize(QtCore.QSize(60, 60))
         self.B_Home.setObjectName("B_Home")
         self.SongName = QtWidgets.QLabel(self.centralwidget)
-        self.SongName.setGeometry(QtCore.QRect(40, 120, 701, 51))
+        self.SongName.setGeometry(QtCore.QRect(40, 200, 701, 51))
         self.SongName.setText("")
         self.SongName.setObjectName("SongName")
         self.label.raise_()
@@ -134,15 +134,21 @@ class Ui_MainWindow(QWidget):
 
     def anadir(self):
         
-        canciones= QFileDialog.getOpenFileNames(self,
+        cancion= QFileDialog.getOpenFileName(self,
                                               str('Open'),
                                               str('/media/pi/MORAMO/MUSICA/'),
                                               str('Music(*.mp3)'))
-        for cancion in canciones
+        self.data = cancion[0]
+        cancion=cancion[0].replace("/media/pi/MORAMO/MUSICA/","").split(',') 
+        #cancion=cancion.replace(".mp3","") 
+        self.SongName.setText(str(cancion))
+        '''
+        for cancion in canciones:
             self.data = cancion
-            cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
-            cancion=cancion.replace(".mp3","") 
+            cancion=str(cancion).replace("/media/pi/MORAMO/MUSICA/","").split(',') 
+            #cancion=cancion.replace(".mp3","") 
             self.SongName.setText(str(cancion))
+        '''
       
     def play(self):
         self.B_Play=pygame.mixer.init()  

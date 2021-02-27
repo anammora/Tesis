@@ -1,5 +1,7 @@
 import sys
 import time
+import Reproductor
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QMainWindow,QPushButton
@@ -59,6 +61,7 @@ class Inicio(QMainWindow):
             self.worker.moveToThread(self.thread)
             self.thread.started.connect(self.worker.run)
             self.thread.start()
+            self.ui.B_Music.clicked.connect(Reproductor.run)
             
             
         except Exception as e:

@@ -1,24 +1,17 @@
 from tkinter import *
 from tkinter import filedialog
+from PIL import Image, ImageTk
 import pygame
+import os
 
 
 root=Tk()
 root.title('Reproductor de musica')
-root.geometry('600x300')
+root.geometry('800x480')
 pygame.mixer.init()
+indexCancion=0
+proxima=(indexCancion,)
 
-def anadir():
-    canciones=filedialog.askopenfilenames(initialdir='/media/pi/MORAMO/MUSICA/',
-                                          title='Elige cancion',
-                                          filetypes=[('mp3','*.mp3'),
-                                                     ('all files','*.*')])
-
-    for cancion in canciones:
-        cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
-        cancion=cancion.replace(".mp3","")
-
-        pantalla.insert(END, cancion)
       
 def play():
     cancion=pantalla.get(ACTIVE)
@@ -33,8 +26,15 @@ def stop():
     pantalla.selection_clear(ACTIVE)
 
 def siguiente():
-    proxima=pantalla.curselection()
-    proxima=proxima[0]+1
+    global indexCancion,proxima
+    #proxima=pantalla.curselection()
+    #print(type(proxima))
+    indexCancion=indexCancion+1
+    proxima=(indexCancion,)
+    if len(canciones)==(indexCancion):
+        indexCancion=0
+        proxima=(indexCancion,)
+  
     cancion=pantalla.get(proxima)
     cancion=f'/media/pi/MORAMO/MUSICA/{cancion}.mp3'
 
@@ -49,8 +49,14 @@ def siguiente():
     pantalla.selection_set(proxima,last)
 
 def anterior():
-    proxima=pantalla.curselection()
-    proxima=proxima[0]-1
+    global indexCancion,proxima
+    
+    indexCancion=indexCancion-1
+    proxima=(indexCancion,)
+    if (indexCancion)==-1:
+        print('hola')
+        indexCancion=len(canciones)-1
+        proxima=(indexCancion,)
     cancion=pantalla.get(proxima)
     cancion=f'/media/pi/MORAMO/MUSICA/{cancion}.mp3'
 
@@ -78,64 +84,73 @@ def pause(is_paused):
     else:
         pygame.mixer.music.pause()
         paused=True
-        
 
-def borrar1():
-    pantalla.delete(ANCHOR)
-    pygame.mixer.music.stop()
-
-def borrar_todas():
-    pantalla.delete(0,END)
-    pygame.mixer.music.stop()
     
 def NoVolume():
-    pygame.mixer.music.set_volume(0.1)
+    pygame.mixer.music.set_volume(0)
 def volume():
     pygame.mixer.music.set_volume(1.0)    
     
     
 
-pantalla=Listbox(root,bg='lightblue',fg='blue',width=60,
+pantalla=Listbox(root,bg='white',fg='black', height=15,width=80,
 selectbackground='white',selectforeground='black')    
 pantalla.pack(pady=20)
 
 botones=Frame(root)
 botones.pack()
 
-anterior=Button(botones,text='Anterior',command=anterior)
+imgAnterior=Image.open("IMG/rewind-button.png")
+imgAnterior=imgAnterior.resize((90,90))
+imgAnterior= ImageTk.PhotoImage(imgAnterior)
+anterior=Button(botones,height=80,width=80,image=imgAnterior,text='Anterior',command=anterior)
 anterior.grid(row=0,column=0)
 
-reproducir=Button(botones,text='Reproducir',command=play)
+imgPlay=Image.open("IMG/play.png")
+imgPlay=imgPlay.resize((80,80))
+imgPlay= ImageTk.PhotoImage(imgPlay)
+reproducir=Button(botones,height=80,width=80,image=imgPlay,text='Reproducir',command=play)
 reproducir.grid(row=0,column=1)
 
-pausa=Button(botones,text='Pausa',command=lambda:pause(paused))
+imgPausa=Image.open("IMG/pause-button.png")
+imgPausa=imgPausa.resize((80,80))
+imgPausa= ImageTk.PhotoImage(imgPausa)
+pausa=Button(botones,height=80,width=80,image=imgPausa,text='Pausa',command=lambda:pause(paused))
 pausa.grid(row=0,column=2)
 
 detener=Button(botones,text='Detener',command=stop)
 detener.grid(row=0,column=3)
 
-siguiente=Button(botones,text='Siguiente',command=siguiente)
+imgSiguiente=Image.open("IMG/forward-button.png")
+imgSiguiente=imgSiguiente.resize((80,80))
+imgSiguiente= ImageTk.PhotoImage(imgSiguiente)
+siguiente=Button(botones,height=80,width=80,image=imgSiguiente,text='Siguiente',command=siguiente)
 siguiente.grid(row=0,column=4)
 
-volume=Button(botones,text='Volumen',command=volume)
+imgVolume=Image.open("IMG/volume-button.png")
+imgVolume=imgVolume.resize((80,80))
+imgVolume= ImageTk.PhotoImage(imgVolume)
+volume=Button(botones,height=80,width=80,image=imgVolume,text='Volumen',command=volume)
 volume.grid(row=0,column=5)
 
-NoVolume=Button(botones,text='NoVolumen',command=NoVolume)
+imgMute=Image.open("IMG/no-sound.png")
+imgMute=imgMute.resize((80,80))
+imgMute= ImageTk.PhotoImage(imgMute)
+NoVolume=Button(botones,height=80,width=80,image=imgMute,text='NoVolumen',command=NoVolume)
 NoVolume.grid(row=0,column=6)
 
 menubar=Menu(root)
 root.config(menu=menubar)
 
-anadir_cancion=Menu(menubar)
-menubar.add_cascade(label="Anadir cancion",menu=anadir_cancion)
-anadir_cancion.add_command(label="Anadir una o mas canciones",command=anadir)
 
-remover=Menu(menubar)
-menubar.add_cascade(label="Borrar Canciones",menu=remover)
-remover.add_command(label="Borrar una cacnion de la pantall",command=borrar1)
-remover.add_command(label="Borrar todas las Canciones",command=borrar_todas)
-    
-root.mainloop()
+canciones=os.listdir('/media/pi/MORAMO/MUSICA/')
+print(canciones)
+for cancion in canciones:
+    #cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
+    cancion=cancion.replace(".mp3","")
+    pantalla.insert(END, cancion)
+def run():
+    root.mainloop()
 
 
 
