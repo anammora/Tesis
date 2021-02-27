@@ -94,14 +94,14 @@ def volume():
     
 
 pantalla=Listbox(root,bg='white',fg='black', height=15,width=80,
-selectbackground='white',selectforeground='black')    
+selectbackground='lightblue',selectforeground='black')    
 pantalla.pack(pady=20)
 
 botones=Frame(root)
 botones.pack()
 
 imgAnterior=Image.open("IMG/rewind-button.png")
-imgAnterior=imgAnterior.resize((90,90))
+imgAnterior=imgAnterior.resize((80,80))
 imgAnterior= ImageTk.PhotoImage(imgAnterior)
 anterior=Button(botones,height=80,width=80,image=imgAnterior,text='Anterior',command=anterior)
 anterior.grid(row=0,column=0)
@@ -118,7 +118,10 @@ imgPausa= ImageTk.PhotoImage(imgPausa)
 pausa=Button(botones,height=80,width=80,image=imgPausa,text='Pausa',command=lambda:pause(paused))
 pausa.grid(row=0,column=2)
 
-detener=Button(botones,text='Detener',command=stop)
+imgStop=Image.open("IMG/stop-button.png")
+imgStop=imgStop.resize((90,90))
+imgStop= ImageTk.PhotoImage(imgStop)
+detener=Button(botones,height=80,width=80,image=imgStop,text='Detener',command=stop)
 detener.grid(row=0,column=3)
 
 imgSiguiente=Image.open("IMG/forward-button.png")
