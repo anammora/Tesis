@@ -62,7 +62,7 @@ def back(image_number):
     
 
 B_back=Button(root,text='<<',command=back)
-B_exit=Button(root,text='exit program',command=root.quit)
+B_exit=Button(root,text='exit program',command=root.destroy)
 B_forward=Button(root,text='>>',command=lambda:forward(2))
 
 B_back.grid(row=1,column=0)
