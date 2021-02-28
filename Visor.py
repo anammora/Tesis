@@ -3,7 +3,14 @@
 from tkinter import *
 from PIL import ImageTk, Image 
   
-  
+def ImgResize(image_no):
+    #print(image_list)
+    my_img1=List_images[image_no]
+    ph=Image.open('/media/pi/MORAMO/GALERIA/'+my_img1)
+    ph=ph.resize((500,380))
+    ph= ImageTk.PhotoImage(ph)
+    return ph  
+
 def forward(img_no): 
   
     # GLobal variable so that we can have 
@@ -85,15 +92,15 @@ root.geometry("600x500")
 # has a class ImageTk We can directly add the 
 # photos in the tkinter folder or we have to 
 # give a proper path for the images 
-image_no_1 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img1.jpeg")) 
-image_no_2 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img2.jpeg")) 
-image_no_3 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img3.jpeg")) 
-image_no_4 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img4.jpeg")) 
+#image_no_1 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img1.jpeg")) 
+#image_no_2 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img2.jpeg")) 
+#image_no_3 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img3.jpeg")) 
+#image_no_4 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img4.jpeg")) 
   
 # List of the images so that we traverse the list 
-List_images = [image_no_1, image_no_2, image_no_3, image_no_4] 
-  
-label = Label(image=image_no_1) 
+List_images = os.listdir('/media/pi/MORAMO/GALERIA/')
+ph=ImgResize(0)  
+label = Label(image=ph) 
   
 # We have to show the the box so this below line is needed 
 label.grid(row=1, column=0, columnspan=3) 
