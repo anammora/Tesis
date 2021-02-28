@@ -79,16 +79,16 @@ root.title("Image Viewer")
   
 # The geometry of the box which will be displayed 
 # on the screen 
-root.geometry("700x700") 
+root.geometry("600x500") 
   
 # Adding the images using the pillow module which 
 # has a class ImageTk We can directly add the 
 # photos in the tkinter folder or we have to 
 # give a proper path for the images 
-image_no_1 = ImageTk.PhotoImage(Image.open("F:/GALERIA/img1.jpeg")) 
-image_no_2 = ImageTk.PhotoImage(Image.open("F:/GALERIA/img2.jpeg")) 
-image_no_3 = ImageTk.PhotoImage(Image.open("F:/GALERIA/img3.jpeg")) 
-image_no_4 = ImageTk.PhotoImage(Image.open("F:/GALERIA/img4.jpeg")) 
+image_no_1 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img1.jpeg")) 
+image_no_2 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img2.jpeg")) 
+image_no_3 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img3.jpeg")) 
+image_no_4 = ImageTk.PhotoImage(Image.open("/media/pi/MORAMO/GALERIA/img4.jpeg")) 
   
 # List of the images so that we traverse the list 
 List_images = [image_no_1, image_no_2, image_no_3, image_no_4] 
