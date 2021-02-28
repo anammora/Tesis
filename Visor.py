@@ -1,5 +1,6 @@
 # importing the tkinter module and PIL 
-# that is pillow module 
+# that is pillow module
+import os
 from tkinter import *
 from PIL import ImageTk, Image 
   
