@@ -5,14 +5,24 @@ import pygame
 import os
 
 root=Tk()
-root.title('Galeria')
-root.iconbitmap('F:/')
-
-my_img1=ImageTk.PhotoImage(Image.open('GALERIA/img1.jpeg'))
-my_img2=ImageTk.PhotoImage(Image.open('GALERIA/img2.jpeg'))
-my_img3=ImageTk.PhotoImage(Image.open('GALERIA/img3.jpeg'))
-my_img4=ImageTk.PhotoImage(Image.open('GALERIA/img4.jpeg'))
-my_img5=ImageTk.PhotoImage(Image.open('GALERIA/img5.jpeg'))
+root.title('GALERIA')
+root.geometry('800x480')
+#img = PhotoImage(file='/media/pi/MORAMO/')
+#root.tk.call('wm', 'iconphoto', root._w, img)
+#root.iconphoto('/media/pi/MORAMO.ico')
+imagenes=os.listdir('/media/pi/MORAMO/GALERIA/')
+print(imagenes)
+for imagen in imagenes:
+    imagen=Image.open("IMG/no-sound.png")
+    imagen=imagen.resize((700,380))
+    imagen= ImageTk.PhotoImage(imagen)
+    
+    pantalla.insert(END, cancion)
+my_img1=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img1.jpeg'))
+my_img2=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img2.jpeg'))
+my_img3=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img3.jpeg'))
+my_img4=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img4.jpeg'))
+my_img5=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img5.jpeg'))
 
 image_list=[my_img1,my_img2,my_img3,my_img4,my_img5]
 
