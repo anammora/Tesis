@@ -37,7 +37,7 @@ def forward(image_number):
     B_back=Button(root,text='<<',command=lambda:back(image_number-1))
     
     if image_number==len(image_list):
-        B_forward=Button(root,text='>>',state=DISABLE)
+        B_forward=Button(root,text='>>',state=DISABLED)
 
     my_label.grid(row=0,column=0,columnspan=3)
     B_back.grid(row=1,column=0)
@@ -48,13 +48,13 @@ def back(image_number):
     global my_label,B_forward,B_back
 
     my_label.grid_forget()
-    #Image=ImgResize(image_number)
-    my_label=Label(image=image_list[image_number-1])
+    Img=ImgResize(image_number-1)
+    my_label=Label(image=Img)
     B_forward=Button(root,text='>>',command=lambda: forward(image_number+1))
     B_back=Button(root,text='<<',command=lambda:back(image_number-1))
 
     if image_number==1:
-        B_back=Button(root,text='<<',state=DISABLE)
+        B_back=Button(root,text='<<',state=DISABLED)
 
     my_label.grid(row=0,column=0,columnspan=3)
     B_back.grid(row=1,column=0)
