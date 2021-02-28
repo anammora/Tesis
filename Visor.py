@@ -23,8 +23,9 @@ def forward(img_no):
     label.grid_forget() 
   
     # This is for clearing the screen so that 
-    # our next image can pop up 
-    label = Label(image=List_images[img_no-1]) 
+    # our next image can pop up
+    ph=ImgResize(image_no-1) 
+    label = Label(image=ph) 
   
     # as the list starts from 0 so we are 
     # subtracting one 
