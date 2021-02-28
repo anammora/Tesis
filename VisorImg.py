@@ -10,11 +10,13 @@ root.geometry('800x480')
 #img = PhotoImage(file='/media/pi/MORAMO/')
 #root.tk.call('wm', 'iconphoto', root._w, img)
 #root.iconphoto('/media/pi/MORAMO.ico')
-imagenes=os.listdir('/media/pi/MORAMO/GALERIA/')
-print(imagenes)
+n=0
+image_list=os.listdir('/media/pi/MORAMO/GALERIA/')
+#print(imagenes)
+'''
 for imagen in imagenes:
     imagen=Image.open("IMG/no-sound.png")
-    imagen=imagen.resize((700,380))
+    imagen=imagen.resize((600,280))
     imagen= ImageTk.PhotoImage(imagen)
     
     pantalla.insert(END, cancion)
@@ -25,7 +27,8 @@ my_img4=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img4.jpeg'))
 my_img5=ImageTk.PhotoImage(Image.open('/media/pi/MORAMO/GALERIA/img5.jpeg'))
 
 image_list=[my_img1,my_img2,my_img3,my_img4,my_img5]
-
+'''
+my_img1=image_list[n]
 my_label=Label(image=my_img1)
 my_label.grid(row=0,column=0,columnspan=3)
 
