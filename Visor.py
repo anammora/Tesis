@@ -25,13 +25,13 @@ def forward(img_no):
   
     # This is for clearing the screen so that 
     # our next image can pop up
-    ph=ImgResize(image_no-1) 
+    ph=ImgResize(img_no-1) 
     label = Label(image=ph) 
   
     # as the list starts from 0 so we are 
     # subtracting one 
     label.grid(row=1, column=0, columnspan=3) 
-    button_for = Button(root, text="forward", 
+    button_forward = Button(root, text="forward", 
                         command=lambda: forward(img_no+1)) 
   
     # img_no+1 as we want the next image to pop up 
@@ -47,7 +47,7 @@ def forward(img_no):
     # Placing the button in new grid 
     button_back.grid(row=5, column=0) 
     button_exit.grid(row=5, column=1) 
-    button_for.grid(row=5, column=2) 
+    button_forward.grid(row=5, column=2) 
   
   
 def back(img_no): 
@@ -77,7 +77,7 @@ def back(img_no):
     label.grid(row=1, column=0, columnspan=3) 
     button_back.grid(row=5, column=0) 
     button_exit.grid(row=5, column=1) 
-    button_for.grid(row=5, column=2) 
+    button_forward.grid(row=5, column=2) 
   
   
 # Calling the Tk (The intial constructor of tkinter) 
