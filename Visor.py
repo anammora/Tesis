@@ -4,9 +4,9 @@ import os
 from tkinter import *
 from PIL import ImageTk, Image 
   
-def ImgResize(image_no):
+def ImgResize(img_no):
     #print(image_list)
-    my_img1=List_images[image_no]
+    my_img1=List_images[img_no]
     ph=Image.open('/media/pi/MORAMO/GALERIA/'+my_img1)
     ph=ph.resize((500,380))
     ph= ImageTk.PhotoImage(ph)
@@ -25,8 +25,9 @@ def forward(img_no):
   
     # This is for clearing the screen so that 
     # our next image can pop up
-    ph=ImgResize(img_no-1) 
-    label = Label(image=ph) 
+    n=(img_no-1)
+    ph=ImgResize(n) 
+    label = Label(image=(ph)) 
   
     # as the list starts from 0 so we are 
     # subtracting one 
@@ -60,8 +61,10 @@ def back(img_no):
     global button_exit 
     label.grid_forget() 
   
-    # for clearing the image for new image to pop up 
-    label = Label(image=List_images[img_no - 1]) 
+    # for clearing the image for new image to pop up
+    n=(img_no-1)
+    ph=ImgResize(n) 
+    label = Label(image=(ph)) 
     label.grid(row=1, column=0, columnspan=3) 
     button_forward = Button(root, text="forward", 
                             command=lambda: forward(img_no + 1)) 
