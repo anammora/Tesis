@@ -32,7 +32,8 @@ def forward(image_number):
     my_label.grid_forget()
     print(image_number)
     Img=ImgResize(image_number-1)
-    my_label=Label(image=Img)
+    my_img = Img
+    my_label=Label(image=my_img)
     image_number+=1
     B_forward=Button(root,text='>>',command=lambda: forward(image_number))
     B_back=Button(root,text='<<',command=lambda:back(image_number-1))
