@@ -30,9 +30,8 @@ def forward(image_number):
     global my_label,B_forward,B_back,B_exit
     
     my_label.grid_forget()
-    print(image_number)
-    Img=ImgResize(image_number-1)
-    my_img = Img
+    my_label.image=ImgResize(image_number-1)
+    my_img = my_label.image
     my_label=Label(image=my_img)
     image_number+=1
     B_forward=Button(root,text='>>',command=lambda: forward(image_number))
@@ -51,8 +50,9 @@ def back(image_number):
     global my_label,B_forward,B_back
 
     my_label.grid_forget()
-    Img=ImgResize(image_number-1)
-    my_label=Label(image=Img)
+    my_label.image=ImgResize(image_number-1)
+    my_img = my_label.image
+    my_label=Label(image=my_img)
     B_forward=Button(root,text='>>',command=lambda: forward(image_number+1))
     B_back=Button(root,text='<<',command=lambda:back(image_number-1))
 

@@ -1,6 +1,7 @@
 import sys
 import time
 import Reproductor
+import pygame
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
@@ -9,6 +10,8 @@ from Ht import Ui_MainWindow as Ui_Ht
 from Remember import Ui_MainWindow as Ui_Remember
 from Inicio import Ui_MainWindow as Ui_Inicio
 from Ht_pin import Ui_MainWindow as Ui_HtPin
+from playsound import playsound
+
 
 exxit=0
 filename = "Horas.txt"
@@ -36,7 +39,12 @@ class Worker(QObject):
                 datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()):
                     
                     print('yes')
+                    #playsound('/home/pi/Music/alarm-clock.mp3')
                     self.Remember.show()
+                    pygame.mixer.init()
+                    pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
+                    pygame.mixer.music.play()
+                    #playsound('/home/pi/Music/alarm-clock.mp3')
                     #MOTOR
                     time.sleep(60)
                
@@ -86,25 +94,31 @@ class Ht_pin(QMainWindow):
         self.label = QLabel("",self)
         self.label.setGeometry(340, 300, 200, 25)
         self.ui.B_Loggin.clicked.connect(lambda:self.Compare())
+        #self.ui.B_Home.clicked.connect(self.create_Inicio_window)
+        self.ui.B_Home.clicked.connect(lambda:self.close())
         
     def Compare(self):
         fname = open(PinFile, 'r')
         Pin= fname.read()
         print(Pin)
         if str(self.ui.lineEdit.text())==Pin:
-            print('otra vez este hpta')
+            #print('otra vez este hpta')
             self.close()
             self.create_Ht_window()
             
         else:
-            self.label.setText("Asi no era")
+            self.label.setText("La clave es incorrecta")
             self.ui.lineEdit.clear()
             
             
     def create_Ht_window(self):
         
         self.Ht=Ht()
-        self.Ht.show()    
+        self.Ht.show()
+        
+    def create_Inicio_window(self):
+        self.Inicio=Inicio()
+        self.Inicio.show()
         
 class Remember(QMainWindow):
     def __init__(self):
@@ -114,7 +128,7 @@ class Remember(QMainWindow):
         self.ui.setupUi(self)
         
         try:
-            print('hpta')
+            #print('hpta')
             
             self.ui.B_Close.clicked.connect(self.close())
         except Exception as e:
@@ -140,7 +154,8 @@ class Ht(QMainWindow):
             self.ui.B_Save.clicked.connect(self.Save)
             #self.setDates(Horas)
             
-            self.ui.B_Home.clicked.connect(self.create_Inicio_window)
+            
+            #self.ui.B_Home.clicked.connect(self.create_Inicio_window)
             self.ui.B_Home.clicked.connect(lambda:self.close())
             
             
