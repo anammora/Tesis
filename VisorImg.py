@@ -33,7 +33,8 @@ def forward(image_number):
     print(image_number)
     Img=ImgResize(image_number-1)
     my_label=Label(image=Img)
-    B_forward=Button(root,text='>>',command=lambda: forward(image_number+1))
+    image_number+=1
+    B_forward=Button(root,text='>>',command=lambda: forward(image_number))
     B_back=Button(root,text='<<',command=lambda:back(image_number-1))
     
     if image_number==len(image_list):
@@ -43,6 +44,7 @@ def forward(image_number):
     B_back.grid(row=1,column=0)
     B_exit.grid(row=1,column=1)
     B_forward.grid(row=1,column=2)
+    
 
 def back(image_number):
     global my_label,B_forward,B_back
