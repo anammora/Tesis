@@ -152,7 +152,7 @@ for cancion in canciones:
     #cancion=cancion.replace("/media/pi/MORAMO/MUSICA/","") 
     cancion=cancion.replace(".mp3","")
     pantalla.insert(END, cancion)
-def run():
+def runn():
     root.mainloop()
 
 

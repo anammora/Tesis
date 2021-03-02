@@ -2,6 +2,7 @@ import sys
 import time
 import Reproductor
 import pygame
+#import VisorImg
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
@@ -70,6 +71,7 @@ class Inicio(QMainWindow):
             self.thread.started.connect(self.worker.run)
             self.thread.start()
             self.ui.B_Music.clicked.connect(Reproductor.run)
+            #self.ui.B_Photo.clicked.connect(VisorImg.runn)
             
             
         except Exception as e:
