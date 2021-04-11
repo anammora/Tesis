@@ -7,13 +7,12 @@ import servito
 #import Reproductor
 import push
 import pygame
-<<<<<<< HEAD
+
 import ventanaEmergente
 from tkinter import *
-=======
+
 #import VisorImg
 
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal,pyqtSlot,QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
 from PyQt5.QtWidgets import QWidget, QLabel, QApplication,QMainWindow,QPushButton
@@ -127,17 +126,17 @@ class Inicio(QMainWindow):
             self.worker.moveToThread(self.thread)
             self.thread.started.connect(self.worker.run)
             self.thread.start()
-<<<<<<< HEAD
+
             self.worker.updHora.connect(self.updateLabel)
             #self.worker.changePixmap.connect(self.setImage)
             #self.ui.B_Music.clicked.connect(Reproductor.run)
             self.ui.B_Multimedia.clicked.connect(self.openMultimedia)
             self.ui.B_Emg.clicked.connect(push.run)
-=======
-            self.ui.B_Music.clicked.connect(Reproductor.run)
+
+            #self.ui.B_Music.clicked.connect(Reproductor.run)
             #self.ui.B_Photo.clicked.connect(VisorImg.runn)
             
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
+
             
         except Exception as e:
             print(e)
