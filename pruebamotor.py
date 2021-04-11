@@ -35,7 +35,7 @@ print("CTRL-C para salir")
 print
 try:
 	while True:
-		cmd = raw_input("inserte el comando ")
+		cmd = input("inserte el comando ")
 		cmd = cmd.lower()
 		motor = cmd[0]
 		direccion =cmd[1]

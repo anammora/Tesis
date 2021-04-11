@@ -6,8 +6,16 @@ import os
 
 
 root=Tk()
+root.columnconfigure(0, weight=1)
+root.columnconfigure(1, weight=1)
+root.columnconfigure(2, weight=1)
+root.columnconfigure(3, weight=1)
+root.columnconfigure(4, weight=1)
+root.columnconfigure(5, weight=1)
+root.rowconfigure(0, weight=1)
+root.rowconfigure(2, weight=1)
 root.title('Reproductor de musica')
-root.geometry('800x480')
+root.geometry('400x240')
 pygame.mixer.init()
 indexCancion=0
 proxima=(indexCancion,)
@@ -93,54 +101,56 @@ def volume():
     
     
 
-pantalla=Listbox(root,bg='white',fg='black', height=15,width=80,
-selectbackground='lightblue',selectforeground='black')    
-pantalla.pack(pady=20)
+pantalla=Listbox(root,bg='white',fg='black',
+selectbackground='lightblue',selectforeground='black')
+pantalla.grid(row=0,column=0,columnspan=6,sticky=S+N+E+W)
+#pantalla.pack(pady=20)
 
-botones=Frame(root)
-botones.pack()
+
+#botones=Frame(root)
+#botones.pack()
 
 imgAnterior=Image.open("IMG/rewind-button.png")
 imgAnterior=imgAnterior.resize((80,80))
 imgAnterior= ImageTk.PhotoImage(imgAnterior)
-anterior=Button(botones,height=80,width=80,image=imgAnterior,text='Anterior',command=anterior)
-anterior.grid(row=0,column=0)
+anterior=Button(root,image=imgAnterior,text='Anterior',command=anterior)
+anterior.grid(row=2,column=0,sticky=S+E+W)
 
 imgPlay=Image.open("IMG/play.png")
 imgPlay=imgPlay.resize((80,80))
 imgPlay= ImageTk.PhotoImage(imgPlay)
-reproducir=Button(botones,height=80,width=80,image=imgPlay,text='Reproducir',command=play)
-reproducir.grid(row=0,column=1)
+reproducir=Button(root,image=imgPlay,text='Reproducir',command=play)
+reproducir.grid(row=2,column=1,sticky=S+E+W)
 
 imgPausa=Image.open("IMG/pause-button.png")
 imgPausa=imgPausa.resize((80,80))
 imgPausa= ImageTk.PhotoImage(imgPausa)
-pausa=Button(botones,height=80,width=80,image=imgPausa,text='Pausa',command=lambda:pause(paused))
-pausa.grid(row=0,column=2)
+pausa=Button(root,image=imgPausa,text='Pausa',command=lambda:pause(paused))
+pausa.grid(row=2,column=2,sticky=S+E+W)
 
 imgStop=Image.open("IMG/stop-button.png")
-imgStop=imgStop.resize((90,90))
+imgStop=imgStop.resize((80,80))
 imgStop= ImageTk.PhotoImage(imgStop)
-detener=Button(botones,height=80,width=80,image=imgStop,text='Detener',command=stop)
-detener.grid(row=0,column=3)
+detener=Button(root,image=imgStop,text='Detener',command=stop)
+detener.grid(row=2,column=3,sticky=S+E+W)
 
 imgSiguiente=Image.open("IMG/forward-button.png")
 imgSiguiente=imgSiguiente.resize((80,80))
 imgSiguiente= ImageTk.PhotoImage(imgSiguiente)
-siguiente=Button(botones,height=80,width=80,image=imgSiguiente,text='Siguiente',command=siguiente)
-siguiente.grid(row=0,column=4)
+siguiente=Button(root,image=imgSiguiente,text='Siguiente',command=siguiente)
+siguiente.grid(row=2,column=4,sticky=S+E+W)
 
 imgVolume=Image.open("IMG/volume-button.png")
 imgVolume=imgVolume.resize((80,80))
 imgVolume= ImageTk.PhotoImage(imgVolume)
-volume=Button(botones,height=80,width=80,image=imgVolume,text='Volumen',command=volume)
-volume.grid(row=0,column=5)
+volume=Button(root,image=imgVolume,text='Volumen',command=volume)
+volume.grid(row=2,column=5,sticky=S+E+W)
 
 imgMute=Image.open("IMG/no-sound.png")
 imgMute=imgMute.resize((80,80))
 imgMute= ImageTk.PhotoImage(imgMute)
-NoVolume=Button(botones,height=80,width=80,image=imgMute,text='NoVolumen',command=NoVolume)
-NoVolume.grid(row=0,column=6)
+NoVolume=Button(root,image=imgMute,text='NoVolumen',command=NoVolume)
+NoVolume.grid(row=2,column=6,sticky=S+E+W)
 
 menubar=Menu(root)
 root.config(menu=menubar)
@@ -154,6 +164,9 @@ for cancion in canciones:
     pantalla.insert(END, cancion)
 def run():
     root.mainloop()
+    
+def destroy():
+    root.destroy()
 
 
 
