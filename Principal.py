@@ -105,6 +105,45 @@ class Worker(QObject):
         #cv2.imshow('VIDEO',frame)
         #cap.release()   
         #cv2.destroyAllWindows()
+
+class WorkerVideo(QObject):
+    changePixmap = pyqtSignal(QImage)
+    def __init__(self):
+        super(WorkerVideo, self).__init__()
+        
+        self.setting=setting()
+        #self.videoVentana=videoVentana()
+    
+    def run(self):
+        cap = cv2.VideoCapture('/media/pi/MORAMO/VIDEO(1)/abuela con Alzheimer reconoce.mp4')
+        while True:
+            try:
+                
+                HoraVideo=self.setting.readFile()
+                datetime = QDateTime.currentDateTime()
+                if (int(datetime.time().hour())==int(HoraVideo[0])):
+                    ret, frame = cap.read()
+                    #print(ret)
+                    print('entra')
+                    self.video(frame,ret)
+
+                    #time.sleep(60) 
+                    
+            except Exception as e:
+                print(e)
+    def video(self,frame,ret):
+        
+        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0], QImage.Format_RGB888)
+        p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+        self.changePixmap.emit(p)
+        frame=cv2.resize(frame,(800,480))
+        if ret==False:
+            print('aqui esta')
+            frame=cv2.resize(frame,(0,0))  
+        #cv2.imshow('VIDEO',frame)
+        #cap.release()   
+        #cv2.destroyAllWindows()
         
             
 class Inicio(QMainWindow):
@@ -157,9 +196,7 @@ class Inicio(QMainWindow):
     def updateLabel(self):
         self.ui.label_3.setText("LA HORA ES: "+ QTime.currentTime().toString())
         self.ui.label_2.setText("HOY ES : "+ QDate.currentDate().toString())
-    @pyqtSlot(QImage)
-    def setImage(self, image):
-        self.label.setPixmap(QPixmap.fromImage(image))   
+      
     def openMultimedia(self):
         ventanaEmergente.run()
     
@@ -169,12 +206,14 @@ class videoVentana(QWidget):
         self.title = "PyQt4 Video"
         self.left = 0
         self.top = 0
-        self.width = 400
+        self.width = 800
         self.height = 480
         self.initUI()
-        
 
-    
+    @pyqtSlot(QImage)
+    def setImage(self, image):
+        self.label.setPixmap(QPixmap.fromImage(image)) 
+ 
     def initUI(self):
         
         self.setWindowTitle(self.title)
@@ -184,6 +223,13 @@ class videoVentana(QWidget):
         self.label = QLabel(self)
         self.label.move(280, 120)
         self.label.resize(800, 480)
+
+        self.thread=QThread()
+        self.worker = WorkerVideo()
+        self.worker.moveToThread(self.thread)
+        self.thread.started.connect(self.worker.run)
+        self.thread.start()
+        self.worker.changePixmap.connect(self.setImage)
           
            
         
