@@ -23,7 +23,6 @@ from Remember import Ui_MainWindow as Ui_Remember
 from setting import Ui_MainWindow as Ui_setting
 from Inicio import Ui_MainWindow as Ui_Inicio
 from Ht_pin import Ui_MainWindow as Ui_HtPin
-from St_pin import Ui_MainWindow as Ui_StPin
 #from VideoCap import Ui_MainWindow as Ui_VideoCap
 
 
@@ -54,11 +53,10 @@ class Worker(QObject):
         #GPIO.setmode(GPIO.BCM)
     
     def run(self):
-        ActServo1=QDateTime.currentDateTime()
-        
+        ActServo1= QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0))
+        ActServo2= QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0))
         while True:
             try:
-                
                 self.updHora.emit()
                 self.Ht.setDates()
                 datetime = QDateTime.currentDateTime()
@@ -77,7 +75,7 @@ class Worker(QObject):
                     pygame.mixer.init()
                     pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
                     pygame.mixer.music.play()
-                    ActServo1=datetime.addSecs(60)
+                    ActServo1=datetime.addSecs(30)
                     print(ActServo1)
                     time.sleep(10)
                     
@@ -89,13 +87,13 @@ class Worker(QObject):
                     print('yes claro')
                     servito.run()
                     #time.sleep(10)
-                '''    
+                  
                 if (datetime.date()==self.Ht.ui.dateTimeC2.date()and
                 datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
                 datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
                     
-                    print('yes')
+                    print('yes2')
                     movMotor.run()
                     #time.sleep(2)
                     self.Remember.show()
@@ -106,15 +104,15 @@ class Worker(QObject):
                     print(ActServo2)
                     time.sleep(10)
                     
-                if (datetime.date()==ActServo1.date()and
-                datetime.time().hour()==ActServo1.time().hour()and
-                datetime.time().minute()==ActServo1.time().minute()and
-                datetime.time().second()==ActServo1.time().second()):
+                if (datetime.date()==ActServo2.date()and
+                datetime.time().hour()==ActServo2.time().hour()and
+                datetime.time().minute()==ActServo2.time().minute()and
+                datetime.time().second()==ActServo2.time().second()):
                     
-                    print('yes claro')
+                    print('yes claro2')
                     servito.run()
                     #time.sleep(10)
-                '''
+                
                 #GPIO.cleanup()                    
             except Exception as e:
                 print(e)
@@ -128,8 +126,7 @@ class WorkerVideo(QObject):
         self.setting=setting()
         #self.videoVentana=videoVentana()'
         global signal
-        
-    
+ 
     def run(self):
         signal=True 
         while signal:
@@ -147,9 +144,6 @@ class WorkerVideo(QObject):
                     self.VideoCap.show()
                     time.sleep(duration+2)
                     signal=False
-                    #self.VideoCap.close()
-                    #time.sleep(10)
-                    #self.VideoCap.close()
                 
                 if (signal==False) :
                     self.VideoCap.close()
@@ -166,32 +160,25 @@ class Inicio(QMainWindow):
 
         try:
 
-            self.ui.B_Pill.clicked.connect(self.create_HtPin_window)
-            self.ui.B_Settings.clicked.connect(self.create_StPin_window)
+            self.ui.B_Pill.clicked.connect(lambda:self.create_HtPin_window('HT'))
+            self.ui.B_Settings.clicked.connect(lambda:self.create_HtPin_window('ST'))
             #self.ui.B_Pill.clicked.connect(lambda:self.close())
             self.thread=QThread()
             self.worker = Worker()
             self.worker.moveToThread(self.thread)
             self.thread.started.connect(self.worker.run)
             self.thread.start()
-            '''
+            
             self.thread1=QThread()
             self.WorkerVideo = WorkerVideo()
             self.WorkerVideo.moveToThread(self.thread1)
             self.thread1.started.connect(self.WorkerVideo.run)
             self.thread1.start()
-            '''
-
-            self.worker.updHora.connect(self.updateLabel)
-            #self.worker.changePixmap.connect(self.setImage)
-            #self.ui.B_Music.clicked.connect(Reproductor.run)
-            self.ui.B_Multimedia.clicked.connect(self.openMultimedia)
-            self.ui.B_Emg.clicked.connect(push.run)
-
-            #self.ui.B_Music.clicked.connect(Reproductor.run)
-            #self.ui.B_Photo.clicked.connect(VisorImg.runn)
             
 
+            self.worker.updHora.connect(self.updateLabel)
+            self.ui.B_Multimedia.clicked.connect(self.openMultimedia)
+            self.ui.B_Emg.clicked.connect(push.run)
             
         except Exception as e:
             print(e)
@@ -200,15 +187,11 @@ class Inicio(QMainWindow):
         self.Ht=Ht()
         self.Ht.show()
         
-    def create_HtPin_window(self):
-        
-        self.Ht_pin=Ht_pin()
+    def create_HtPin_window(self,var):
+        print(var)
+        self.Ht_pin=Ht_pin(var)
         self.Ht_pin.show()
-    def create_StPin_window(self):
-        
-        self.St_pin=St_pin()
-        self.St_pin.show()
-        
+       
     def updateLabel(self):
         self.ui.label_3.setText("LA HORA ES: "+ QTime.currentTime().toString())
         self.ui.label_2.setText("HOY ES : "+ QDate.currentDate().toString())
@@ -217,25 +200,30 @@ class Inicio(QMainWindow):
         ventanaEmergente.run()
       
 class Ht_pin(QMainWindow):
-    def __init__(self):
+    def __init__(self,var):
         super(Ht_pin, self).__init__()
         self.ui = Ui_HtPin()
 
         self.ui.setupUi(self)
         self.label = QLabel("",self)
         self.label.setGeometry(340, 300, 200, 25)
-        self.ui.B_Loggin.clicked.connect(lambda:self.Compare())
+        self.var=var
+        self.ui.B_Loggin.clicked.connect(lambda:self.Compare(var))
         #self.ui.B_Home.clicked.connect(self.create_Inicio_window)
         self.ui.B_Home.clicked.connect(lambda:self.close())
         
-    def Compare(self):
+    def Compare(self,var):
         fname = open(PinFile, 'r')
         Pin= fname.read()
         print(Pin)
-        if str(self.ui.lineEdit.text())==Pin:
+        if str(self.ui.lineEdit.text())==str(Pin):
             #print('otra vez este hpta')
-            self.close()
-            self.create_Ht_window()
+            if var=='HT':
+                self.close()
+                self.create_Ht_window()
+            else:
+                self.close()
+                self.create_St_window()
             
         else:
             self.label.setText("La clave es incorrecta")
@@ -247,37 +235,7 @@ class Ht_pin(QMainWindow):
         self.Ht=Ht()
         self.Ht.show()
         
-    def create_Inicio_window(self):
-        self.Inicio=Inicio()
-        self.Inicio.show()
-        
-class St_pin(QMainWindow):
-    def __init__(self):
-        super(St_pin, self).__init__()
-        self.ui = Ui_HtPin()
-
-        self.ui.setupUi(self)
-        self.label = QLabel("",self)
-        self.label.setGeometry(340, 300, 200, 25)
-        self.ui.B_Loggin.clicked.connect(lambda:self.Compare())
-        #self.ui.B_Home.clicked.connect(self.create_Inicio_window)
-        self.ui.B_Home.clicked.connect(lambda:self.close())
-        
-    def Compare(self):
-        fname = open(PinFile, 'r')
-        Pin= fname.read()
-        print(Pin)
-        if str(self.ui.lineEdit.text())==Pin:
-            #print('otra vez este hpta')
-            self.close()
-            self.create_setting_window()
-            
-        else:
-            self.label.setText("La clave es incorrecta")
-            self.ui.lineEdit.clear()
-            
-            
-    def create_setting_window(self):
+    def create_St_window(self):
         
         self.setting=setting()
         self.setting.show()
@@ -285,6 +243,7 @@ class St_pin(QMainWindow):
     def create_Inicio_window(self):
         self.Inicio=Inicio()
         self.Inicio.show()
+        
         
 class Remember(QMainWindow):        
     def __init__(self):
@@ -351,6 +310,11 @@ class setting(QMainWindow):
         fname = open(filevideo, 'w')
         fname.write(timeEditVideo.toString(Qt.ISODate))
         fname.close()
+        lineEditPassword=self.ui.lineEditPassword.text()
+        ftext=open(PinFile,'w')
+        ftext.write(lineEditPassword)
+        ftext.close()
+        
     def readFile(self):
         fname = open(filevideo, 'r')
         HoraVideo= fname.read().split(':')
