@@ -97,7 +97,7 @@ def pause(is_paused):
 def NoVolume():
     pygame.mixer.music.set_volume(0)
 def volume():
-    pygame.mixer.music.set_volume(1.0)    
+    pygame.mixer.music.set_volume(0.8)    
     
     
 

@@ -1,29 +1,30 @@
 import sys
-import cv2
 import time
+import RPi.GPIO as GPIO
+import pygame
+import os
+import cv2
 import movMotor
 import servito
-#import subprocess
-#import Reproductor
 import push
-import pygame
-
 import ventanaEmergente
 from tkinter import *
 
 #import VisorImg
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import pyqtSignal,pyqtSlot,QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
-from PyQt5.QtWidgets import QWidget, QLabel, QApplication,QMainWindow,QPushButton
+from PyQt5.QtCore import pyqtSignal,QUrl,pyqtSlot,QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
+from PyQt5.QtWidgets import QWidget, QLabel, QApplication,QMainWindow,QPushButton,QHBoxLayout,QVBoxLayout
 from PyQt5.QtGui import QImage,QPixmap
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 from Ht import Ui_MainWindow as Ui_Ht
 from Remember import Ui_MainWindow as Ui_Remember
 from setting import Ui_MainWindow as Ui_setting
 from Inicio import Ui_MainWindow as Ui_Inicio
 from Ht_pin import Ui_MainWindow as Ui_HtPin
 from St_pin import Ui_MainWindow as Ui_StPin
-#from playsound import playsound
+#from VideoCap import Ui_MainWindow as Ui_VideoCap
 
 
 exxit=0
@@ -31,119 +32,130 @@ filename = "Horas.txt"
 filevideo="HVideo.txt"
 PinFile="PinFile.txt"
 
+VIDEO_PATH = "/media/pi/MORAMO/VIDEO(1)/Animales Tiernos.mp4"
+video = cv2.VideoCapture(VIDEO_PATH)
+frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
+fps = video.get(cv2.CAP_PROP_FPS)
+duration = frame_count/fps
+global signal
+signal=True
+
+#clip = VideoFileClip(VIDEO_PATH)
+#print( clip.duration )
 
 class Worker(QObject):
     updHora=pyqtSignal()
-    changePixmap = pyqtSignal(QImage)
     def __init__(self):
         super(Worker, self).__init__()
         self.Ht=Ht()
         self.setting=setting()
         self.Remember=Remember()
         self.Remember.ui.B_Close.clicked.connect(lambda:self.Remember.close())
-        self.videoVentana=videoVentana()
+        #GPIO.setmode(GPIO.BCM)
     
     def run(self):
         ActServo1=QDateTime.currentDateTime()
-        cap = cv2.VideoCapture('/media/pi/MORAMO/VIDEO(1)/abuela con Alzheimer reconoce.mp4')
+        
         while True:
             try:
                 
                 self.updHora.emit()
                 self.Ht.setDates()
-                HoraVideo=self.setting.readFile()
                 datetime = QDateTime.currentDateTime()
-                #print(HoraVideo)
-                #print(datetime.time().minute()) datetime.time().minute()==HoraVideo[1]
-                #print(int(HoraVideo[0]))
-                if (int(datetime.time().hour())==int(HoraVideo[0])):
-                    ret, frame = cap.read()
-                    #print(ret)
-                    #print('entra')
-                    #self.video(frame,ret)
-
-                    #time.sleep(60) 
-                    
-                            
+                HoraVideo=self.setting.readFile()
+                #print(duration)
+                
                 if (datetime.date()==self.Ht.ui.dateTimeC1.date()and
                 datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
-                datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and
+                datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and#):#and
                 datetime.time().second()==self.Ht.ui.dateTimeC1.time().second()):
-                    #print('yes')
-                    #movMotor.run()
+                    
+                    print('yes')
+                    movMotor.run()
+                    #time.sleep(2)
                     self.Remember.show()
                     pygame.mixer.init()
                     pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
                     pygame.mixer.music.play()
-                    ActServo1=datetime.addSecs(30)
+                    ActServo1=datetime.addSecs(60)
                     print(ActServo1)
-                    #time.sleep(60)
+                    time.sleep(10)
                     
                 if (datetime.date()==ActServo1.date()and
                 datetime.time().hour()==ActServo1.time().hour()and
                 datetime.time().minute()==ActServo1.time().minute()and
                 datetime.time().second()==ActServo1.time().second()):
                     
-                    print('yes')
+                    print('yes claro')
                     servito.run()
-                    #time.sleep(60)
+                    #time.sleep(10)
+                '''    
+                if (datetime.date()==self.Ht.ui.dateTimeC2.date()and
+                datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
+                datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
+                datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
                     
-                
-                #print(datetime.addSecs(120).toString(Qt.ISODate))  
+                    print('yes')
+                    movMotor.run()
+                    #time.sleep(2)
+                    self.Remember.show()
+                    pygame.mixer.init()
+                    pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
+                    pygame.mixer.music.play()
+                    ActServo2=datetime.addSecs(60)
+                    print(ActServo2)
+                    time.sleep(10)
+                    
+                if (datetime.date()==ActServo1.date()and
+                datetime.time().hour()==ActServo1.time().hour()and
+                datetime.time().minute()==ActServo1.time().minute()and
+                datetime.time().second()==ActServo1.time().second()):
+                    
+                    print('yes claro')
+                    servito.run()
+                    #time.sleep(10)
+                '''
+                #GPIO.cleanup()                    
             except Exception as e:
                 print(e)
-    def video(self,frame,ret):
         
-        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0], QImage.Format_RGB888)
-        p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.changePixmap.emit(p)
-        frame=cv2.resize(frame,(800,480))
-        if ret==False:
-            print('aqui esta')
-            frame=cv2.resize(frame,(0,0))  
-        #cv2.imshow('VIDEO',frame)
-        #cap.release()   
-        #cv2.destroyAllWindows()
-
+    
 class WorkerVideo(QObject):
-    changePixmap = pyqtSignal(QImage)
+    
     def __init__(self):
         super(WorkerVideo, self).__init__()
-        
+        self.VideoCap=VideoCap()
         self.setting=setting()
-        #self.videoVentana=videoVentana()
+        #self.videoVentana=videoVentana()'
+        global signal
+        
     
     def run(self):
-        cap = cv2.VideoCapture('/media/pi/MORAMO/VIDEO(1)/abuela con Alzheimer reconoce.mp4')
-        while True:
+        signal=True 
+        while signal:
+            
             try:
-                
-                HoraVideo=self.setting.readFile()
+                               
                 datetime = QDateTime.currentDateTime()
-                if (int(datetime.time().hour())==int(HoraVideo[0])):
-                    ret, frame = cap.read()
-                    #print(ret)
-                    print('entra')
-                    self.video(frame,ret)
-
-                    #time.sleep(60) 
+                HoraVideo=self.setting.readFile()
+                #print(duration)
+                #print(int(datetime.time().minute()),int(HoraVideo[1]) )   
+                if (int(datetime.time().hour())==int(HoraVideo[0]) and \
+                    int(datetime.time().minute())==int(HoraVideo[1])):
                     
+                    #print("entra")
+                    self.VideoCap.show()
+                    time.sleep(duration+2)
+                    signal=False
+                    #self.VideoCap.close()
+                    #time.sleep(10)
+                    #self.VideoCap.close()
+                
+                if (signal==False) :
+                    self.VideoCap.close()
+                 
             except Exception as e:
                 print(e)
-    def video(self,frame,ret):
-        
-        rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        convertToQtFormat = QImage(rgbImage.data, rgbImage.shape[1], rgbImage.shape[0], QImage.Format_RGB888)
-        p = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-        self.changePixmap.emit(p)
-        frame=cv2.resize(frame,(800,480))
-        if ret==False:
-            print('aqui esta')
-            frame=cv2.resize(frame,(0,0))  
-        #cv2.imshow('VIDEO',frame)
-        #cap.release()   
-        #cv2.destroyAllWindows()
         
             
 class Inicio(QMainWindow):
@@ -151,10 +163,7 @@ class Inicio(QMainWindow):
         super(Inicio, self).__init__()
         self.ui = Ui_Inicio()
         self.ui.setupUi(self)
-        #self.label = QLabel(self)
-        #self.label.move(30, 0)
-        #self.label.resize(800, 480)
-  
+
         try:
 
             self.ui.B_Pill.clicked.connect(self.create_HtPin_window)
@@ -165,6 +174,13 @@ class Inicio(QMainWindow):
             self.worker.moveToThread(self.thread)
             self.thread.started.connect(self.worker.run)
             self.thread.start()
+            '''
+            self.thread1=QThread()
+            self.WorkerVideo = WorkerVideo()
+            self.WorkerVideo.moveToThread(self.thread1)
+            self.thread1.started.connect(self.WorkerVideo.run)
+            self.thread1.start()
+            '''
 
             self.worker.updHora.connect(self.updateLabel)
             #self.worker.changePixmap.connect(self.setImage)
@@ -199,40 +215,7 @@ class Inicio(QMainWindow):
       
     def openMultimedia(self):
         ventanaEmergente.run()
-    
-class videoVentana(QWidget):
-    def __init__(self):
-        super(videoVentana, self).__init__()
-        self.title = "PyQt4 Video"
-        self.left = 0
-        self.top = 0
-        self.width = 800
-        self.height = 480
-        self.initUI()
-
-    @pyqtSlot(QImage)
-    def setImage(self, image):
-        self.label.setPixmap(QPixmap.fromImage(image)) 
- 
-    def initUI(self):
-        
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
-        
-        # create a label
-        self.label = QLabel(self)
-        self.label.move(280, 120)
-        self.label.resize(800, 480)
-
-        self.thread=QThread()
-        self.worker = WorkerVideo()
-        self.worker.moveToThread(self.thread)
-        self.thread.started.connect(self.worker.run)
-        self.thread.start()
-        self.worker.changePixmap.connect(self.setImage)
-          
-           
-        
+      
 class Ht_pin(QMainWindow):
     def __init__(self):
         super(Ht_pin, self).__init__()
@@ -303,7 +286,7 @@ class St_pin(QMainWindow):
         self.Inicio=Inicio()
         self.Inicio.show()
         
-class Remember(QMainWindow):
+class Remember(QMainWindow):        
     def __init__(self):
         super(Remember, self).__init__()
         self.ui = Ui_Remember()
@@ -316,6 +299,36 @@ class Remember(QMainWindow):
         except Exception as e:
             print(e)
             
+class VideoCap(QMainWindow):        
+    def __init__(self):
+        super().__init__()
+        
+        # Controles principales para organizar la ventana.
+        self.widget = QWidget(self)
+        self.layout = QVBoxLayout()
+        self.bottom_layout = QHBoxLayout()
+        
+        # Control de reproducción de video de Qt.
+        self.video_widget = QVideoWidget(self)
+        self.media_player = QMediaPlayer()
+        self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(VIDEO_PATH)))
+        self.video_widget.resize(800,480)
+        self.media_player.setVideoOutput(self.video_widget)
+        # Personalizar la ventana.
+        
+        self.setWindowTitle("Reproductor de video")
+        self.resize(800, 480)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.bottom_layout.setContentsMargins(0, 0, 0, 0)
+        self.widget.setLayout(self.layout)
+        self.setCentralWidget(self.widget)
+        
+        # Reproducir el video.
+        self.media_player.play()
+        #print(self.media_player.EndOfMedia)
+        self.media_player.setVolume(200)
+        
+                   
 class setting(QMainWindow):
     def __init__(self):
         global HoraVideo 
@@ -441,6 +454,7 @@ application.show()
 sys.exit(app.exec())
 
 GPIO.cleanup()
+
 
 
 
