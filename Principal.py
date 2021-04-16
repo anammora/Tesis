@@ -59,6 +59,7 @@ class Worker(QObject):
             try:
                 self.updHora.emit()
                 self.Ht.setDates()
+                print(self.Ht.ui.dateTimeC1.time().minute(),self.Ht.ui.dateTimeC2.time().minute())
                 datetime = QDateTime.currentDateTime()
                 HoraVideo=self.setting.readFile()
                 #print(duration)
@@ -67,7 +68,7 @@ class Worker(QObject):
                 datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and#):#and
                 datetime.time().second()==self.Ht.ui.dateTimeC1.time().second()):
-                    
+                    print(self.Ht.ui.dateTimeC2.time().minute())
                     print('yes')
                     movMotor.run()
                     #time.sleep(2)
@@ -92,7 +93,7 @@ class Worker(QObject):
                 datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
                 datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
-                    
+                    print(self.Ht.ui.dateTimeC2.time().minute())
                     print('yes2')
                     movMotor.run()
                     #time.sleep(2)
@@ -389,6 +390,7 @@ class Ht(QMainWindow):
         
     def setDates(self):
         Horas=self.readFile()
+        print(Horas)
         dateTime1=QtCore.QDateTime.fromString(Horas[0],Qt.ISODate)
         self.ui.dateTimeC1.setDateTime(dateTime1)
         
