@@ -50,7 +50,7 @@ def run():
             dtState=GPIO.input(dt)
             #if a>b:
                 #print('1 comparacion')
-            if counter<315:
+            if counter<317:
                 #print('2 comparacion')
                 Giro_Favor_Reloj_MotorB()
                 pwm_b.ChangeDutyCycle(int(velocidad))

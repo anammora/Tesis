@@ -59,7 +59,6 @@ class Worker(QObject):
             try:
                 self.updHora.emit()
                 self.Ht.setDates()
-                print(self.Ht.ui.dateTimeC1.time().minute(),self.Ht.ui.dateTimeC2.time().minute())
                 datetime = QDateTime.currentDateTime()
                 HoraVideo=self.setting.readFile()
                 #print(duration)
@@ -67,33 +66,28 @@ class Worker(QObject):
                 if (datetime.date()==self.Ht.ui.dateTimeC1.date()and
                 datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and#):#and
-                datetime.time().second()==self.Ht.ui.dateTimeC1.time().second()):
-                    print(self.Ht.ui.dateTimeC2.time().minute())
-                    print('yes')
-                    movMotor.run()
-                    #time.sleep(2)
-                    self.Remember.show()
-                    pygame.mixer.init()
-                    pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
-                    pygame.mixer.music.play()
-                    ActServo1=datetime.addSecs(30)
-                    print(ActServo1)
-                    time.sleep(10)
+                datetime.time().second()==self.Ht.ui.dateTimeC1.time().second())or\
+                (datetime.date()==self.Ht.ui.dateTimeC2.date()and
+                datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
+                datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
+                datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
                     
-                if (datetime.date()==ActServo1.date()and
-                datetime.time().hour()==ActServo1.time().hour()and
-                datetime.time().minute()==ActServo1.time().minute()and
-                datetime.time().second()==ActServo1.time().second()):
+                    ActServo=self.ActDispense(datetime)
+                    
+                if (datetime.date()==ActServo.date()and
+                datetime.time().hour()==ActServo.time().hour()and
+                datetime.time().minute()==ActServo.time().minute()and
+                datetime.time().second()==ActServo.time().second()):
                     
                     print('yes claro')
                     servito.run()
                     #time.sleep(10)
-                  
+                '''  
                 if (datetime.date()==self.Ht.ui.dateTimeC2.date()and
                 datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
                 datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
-                    print(self.Ht.ui.dateTimeC2.time().minute())
+                    
                     print('yes2')
                     movMotor.run()
                     #time.sleep(2)
@@ -113,12 +107,24 @@ class Worker(QObject):
                     print('yes claro2')
                     servito.run()
                     #time.sleep(10)
-                
+                '''
                 #GPIO.cleanup()                    
             except Exception as e:
                 print(e)
+    def ActDispense(self,datetime):
         
-    
+        print('yes')
+        movMotor.run()
+        #time.sleep(2)
+        self.Remember.show()
+        pygame.mixer.init()
+        pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
+        pygame.mixer.music.play()
+        ActServo1=datetime.addSecs(30)
+        print(ActServo1)
+        time.sleep(10)
+        return ActServo
+
 class WorkerVideo(QObject):
     
     def __init__(self):
@@ -390,7 +396,7 @@ class Ht(QMainWindow):
         
     def setDates(self):
         Horas=self.readFile()
-        print(Horas)
+        
         dateTime1=QtCore.QDateTime.fromString(Horas[0],Qt.ISODate)
         self.ui.dateTimeC1.setDateTime(dateTime1)
         
