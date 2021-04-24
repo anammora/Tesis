@@ -19,7 +19,8 @@ from PyQt5.QtGui import QImage,QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from Ht import Ui_MainWindow as Ui_Ht
-from Remember import Ui_MainWindow as Ui_Remember
+from Reminder import Ui_MainWindow as Ui_Reminder
+from RechargeReminder import Ui_MainWindow as Ui_RechargeReminder
 from setting import Ui_MainWindow as Ui_setting
 from Inicio import Ui_MainWindow as Ui_Inicio
 from Ht_pin import Ui_MainWindow as Ui_HtPin
@@ -48,13 +49,15 @@ class Worker(QObject):
         super(Worker, self).__init__()
         self.Ht=Ht()
         self.setting=setting()
-        self.Remember=Remember()
-        self.Remember.ui.B_Close.clicked.connect(lambda:self.Remember.close())
+        self.Reminder=Reminder()
+        self.Reminder.ui.B_Close.clicked.connect(lambda:self.Reminder.close())
+        self.RechargeReminder=RechargeReminder()
+        self.RechargeReminder.ui.B_Close.clicked.connect(lambda:self.RechargeReminder.close())
         #GPIO.setmode(GPIO.BCM)
     
     def run(self):
-        ActServo1= QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0))
-        ActServo2= QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0))
+        ActServo= QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0))
+        ActC7= QDateTime(QDate(2000, 1, 1), QTime(0, 0, 0))
         while True:
             try:
                 self.updHora.emit()
@@ -74,6 +77,15 @@ class Worker(QObject):
                     
                     ActServo=self.ActDispense(datetime)
                     
+                if (datetime.date()==self.Ht.ui.dateTimeC6.date()and
+                datetime.time().hour()==self.Ht.ui.dateTimeC6.time().hour()and
+                datetime.time().minute()==self.Ht.ui.dateTimeC6.time().minute()and#):#and
+                datetime.time().second()==self.Ht.ui.dateTimeC6.time().second()):
+                    
+                    ActServo=self.ActDispense(datetime)
+                    ActC7=datetime.addSecs(60)#3600
+                    print(ActC7)
+                
                 if (datetime.date()==ActServo.date()and
                 datetime.time().hour()==ActServo.time().hour()and
                 datetime.time().minute()==ActServo.time().minute()and
@@ -81,33 +93,20 @@ class Worker(QObject):
                     
                     print('yes claro')
                     servito.run()
-                    #time.sleep(10)
-                '''  
-                if (datetime.date()==self.Ht.ui.dateTimeC2.date()and
-                datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
-                datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
-                datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
                     
-                    print('yes2')
+                    #time.sleep(10)
+                if (datetime.date()==ActC7.date()and
+                datetime.time().hour()==ActC7.time().hour()and
+                datetime.time().minute()==ActC7.time().minute()and
+                datetime.time().second()==ActC7.time().second()):
+                    
+                    print('Compartimento7')
                     movMotor.run()
-                    #time.sleep(2)
-                    self.Remember.show()
-                    pygame.mixer.init()
-                    pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
-                    pygame.mixer.music.play()
-                    ActServo2=datetime.addSecs(60)
-                    print(ActServo2)
-                    time.sleep(10)
-                    
-                if (datetime.date()==ActServo2.date()and
-                datetime.time().hour()==ActServo2.time().hour()and
-                datetime.time().minute()==ActServo2.time().minute()and
-                datetime.time().second()==ActServo2.time().second()):
-                    
-                    print('yes claro2')
-                    servito.run()
+                    self.RechargeReminder.show()
+                    # Mostrar pantalla de cargar 
                     #time.sleep(10)
-                '''
+                
+                
                 #GPIO.cleanup()                    
             except Exception as e:
                 print(e)
@@ -116,12 +115,12 @@ class Worker(QObject):
         print('yes')
         movMotor.run()
         #time.sleep(2)
-        self.Remember.show()
+        self.Reminder.show()
         pygame.mixer.init()
         pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
         pygame.mixer.music.play()
-        ActServo1=datetime.addSecs(30)
-        print(ActServo1)
+        ActServo=datetime.addSecs(30)
+        print(ActServo)
         time.sleep(10)
         return ActServo
 
@@ -252,10 +251,10 @@ class Ht_pin(QMainWindow):
         self.Inicio.show()
         
         
-class Remember(QMainWindow):        
+class Reminder(QMainWindow):        
     def __init__(self):
-        super(Remember, self).__init__()
-        self.ui = Ui_Remember()
+        super(Reminder, self).__init__()
+        self.ui = Ui_Reminder()
 
         self.ui.setupUi(self)
         
@@ -264,7 +263,18 @@ class Remember(QMainWindow):
             self.ui.B_Close.clicked.connect(self.close())
         except Exception as e:
             print(e)
+class RechargeReminder(QMainWindow):        
+    def __init__(self):
+        super(RechargeReminder, self).__init__()
+        self.ui = Ui_RechargeReminder()
+
+        self.ui.setupUi(self)
+        
+        try:
             
+            self.ui.B_Close.clicked.connect(self.close())
+        except Exception as e:
+            print(e)
 class VideoCap(QMainWindow):        
     def __init__(self):
         super().__init__()

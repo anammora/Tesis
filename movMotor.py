@@ -73,7 +73,9 @@ def run():
                 #GPIO.cleanup() 
                 
     except :
+        GPIO.cleanup() 
         pass
+GPIO.cleanup()    
                 
     
 #run()    
