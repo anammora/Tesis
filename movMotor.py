@@ -8,8 +8,8 @@ enb = 18
 in3 = 23
 in4 = 24
 
-clk = 17
-dt = 27
+OutA = 17
+OutB = 27
 
 
 
@@ -24,7 +24,7 @@ def  Giro_Favor_Reloj_MotorB():
 	
 def run():
 #GPIO.setmode(GPIO.BCM)
-    #global counter,clkLastState
+    #global counter,OutALast
     #print(counter)
     #configura los pines como salidas
 
@@ -32,8 +32,8 @@ def run():
     GPIO.setup(in3, GPIO.OUT)
     GPIO.setup(in4, GPIO.OUT)
 
-    GPIO.setup(clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(OutA, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(OutB, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     #Define las salidas PWM q
     pwm_b = GPIO.PWM(enb,500)
 
@@ -42,12 +42,12 @@ def run():
     # funciones de sentido de giro de los motores
 
     counter = 0
-    clkLastState = GPIO.input(clk)
+    OutALast = GPIO.input(OutA)
     try:
         while True:
             velocidad=15
-            clkState=GPIO.input(clk)
-            dtState=GPIO.input(dt)
+            OutAState=GPIO.input(OutA)
+            OutBState=GPIO.input(OutB)
             #if a>b:
                 #print('1 comparacion')
             if counter<317:
@@ -55,14 +55,14 @@ def run():
                 Giro_Favor_Reloj_MotorB()
                 pwm_b.ChangeDutyCycle(int(velocidad))
                 print
-                #print(clkState,clkLastState)
-                if clkState != clkLastState:
+                #print(OutAState,OutALast)
+                if OutAState != OutALast:
                     #print('3 comparacion')
-                    if dtState != clkState:
+                    if OutBState != OutAState:
                         counter +=1
                         #print('4 comparacion')
                     #print(counter)
-                clkLastState=clkState
+                OutALast=OutAState
                 #time.sleep(0.01)
             else:
                 print('bye')
