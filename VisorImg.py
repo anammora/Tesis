@@ -42,11 +42,7 @@ def forward(image_number):
     B_forward.image=imgSiguiente
     imgS=B_forward.image
 
-<<<<<<< HEAD
     B_forward=Button(rootV,text='>>',image=imgS,
-=======
-    B_forward=Button(root,text='>>',image=imgS,
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
                      command=lambda: forward(image_number+1))
     
     imgAnterior=Image.open("IMG/rewind-button.png")
@@ -55,19 +51,11 @@ def forward(image_number):
     B_back.image=imgAnterior
     imgA=B_back.image
 
-<<<<<<< HEAD
     B_back=Button(rootV,text='<<',image=imgA,
                   command=lambda:back(image_number-1))
     
     if image_number==len(image_list):
         B_forward=Button(rootV,image=imgS,text='>>',state=DISABLED)
-=======
-    B_back=Button(root,text='<<',image=imgA,
-                  command=lambda:back(image_number-1))
-    
-    if image_number==len(image_list):
-        B_forward=Button(root,image=imgS,text='>>',state=DISABLED)
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
 
     my_label.grid(row=0,column=0,columnspan=3)
     B_back.grid(row=1,column=0,rowspan=2)
@@ -88,11 +76,7 @@ def back(image_number):
     B_forward.image=imgSiguiente
     imgS=B_forward.image
     
-<<<<<<< HEAD
     B_forward=Button(rootV,image=imgS,text='>>',command=lambda: forward(image_number+1))
-=======
-    B_forward=Button(root,image=imgS,text='>>',command=lambda: forward(image_number+1))
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
     
     imgAnterior=Image.open("IMG/rewind-button.png")
     imgAnterior=imgAnterior.resize((50,50))
@@ -101,19 +85,11 @@ def back(image_number):
     B_back.image=imgAnterior
     imgA=B_back.image
     
-<<<<<<< HEAD
     B_back=Button(rootV,image=imgA,text='<<',
                   command=lambda:back(image_number-1))
 
     if image_number==1:
         B_back=Button(rootV,image=imgA,text='<<',state=DISABLED)
-=======
-    B_back=Button(root,image=imgA,text='<<',
-                  command=lambda:back(image_number-1))
-
-    if image_number==1:
-        B_back=Button(root,image=imgA,text='<<',state=DISABLED)
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
 
     my_label.grid(row=0,column=0,columnspan=3)
     B_back.grid(row=1,column=0,rowspan=2)
@@ -122,17 +98,12 @@ def back(image_number):
 imgAnterior=Image.open("IMG/rewind-button.png")
 imgAnterior=imgAnterior.resize((50,50))
 imgAnterior= ImageTk.PhotoImage(imgAnterior)
-<<<<<<< HEAD
 B_back=Button(rootV,image=imgAnterior,text='<<',command=back,state=DISABLED)
-=======
-B_back=Button(root,image=imgAnterior,text='<<',command=back,state=DISABLED)
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
 
 imgHome=Image.open("IMG/home.png")
 imgHome=imgHome.resize((50,50))
 imgHome= ImageTk.PhotoImage(imgHome)
 
-<<<<<<< HEAD
 B_exit=Button(rootV,image=imgHome,text='exit program',command=rootV.destroy)
 
 
@@ -151,21 +122,5 @@ def run():
 def destroy():
     rootV.destroy()
     
-=======
-B_exit=Button(root,image=imgHome,text='exit program',command=root.destroy)
-
-
-imgSiguiente=Image.open("IMG/forward-button.png")
-imgSiguiente=imgSiguiente.resize((50,50))
-imgSiguiente= ImageTk.PhotoImage(imgSiguiente)
-B_forward=Button(root,image=imgSiguiente,text='>>',command=lambda:forward(2))
-
-B_back.grid(row=1,column=0,rowspan=2)
-B_exit.grid(row=1,column=1,rowspan=2)
-B_forward.grid(row=1,column=2,rowspan=2)
-
-def run():
-    root.mainloop()
->>>>>>> 7e871379521b4e36385ec58fe96c7eeb69123f24
 
 
