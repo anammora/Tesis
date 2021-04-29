@@ -6,6 +6,6 @@ def run():
       urllib.parse.urlencode({
         "token": "arq28r8hbjj965hkgn9s4kzwwu3n8z",
         "user": "u9dxxbg3sm5it6ipbzivbs2na414f2",
-        "message": "Ven rápido por favor",
+        "message": "Necesito tu ayuda por favor",
       }), { "Content-type": "application/x-www-form-urlencoded" })
     conn.getresponse()

@@ -32,7 +32,7 @@ filename = "Horas.txt"
 filevideo="HVideo.txt"
 PinFile="PinFile.txt"
 
-VIDEO_PATH = "/media/pi/MORAMO/VIDEO(1)/Animales Tiernos.mp4"
+VIDEO_PATH = "/media/pi/MORAMO/VIDEO(1)/AnimalesTiernos.mp4"
 video = cv2.VideoCapture(VIDEO_PATH)
 frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
 fps = video.get(cv2.CAP_PROP_FPS)
@@ -143,7 +143,7 @@ class WorkerVideo(QObject):
                 HoraVideo=self.setting.readFile()
                 #print(duration)
                 #print(int(datetime.time().minute()),int(HoraVideo[1]) )   
-                if (int(datetime.time().hour())==int(HoraVideo[0]) and \
+                if (int(datetime.time().hour())==int(HoraVideo[0]) and\
                     int(datetime.time().minute())==int(HoraVideo[1])):
                     
                     #print("entra")

@@ -21,7 +21,7 @@ class Ui_MainWindow(object):
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(280, 10, 221, 21))
+        self.label_2.setGeometry(QtCore.QRect(300, 10, 161, 21))
         font = QtGui.QFont()
         font.setPointSize(18)
         font.setBold(True)
@@ -52,7 +52,7 @@ class Ui_MainWindow(object):
         self.lineEdit.setObjectName("lineEdit")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 28))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 27))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.label_2.setText(_translate("MainWindow", "HORARIOS DE TOMA "))
+        self.label_2.setText(_translate("MainWindow", "VERIFICACIÓN"))
         self.label_3.setText(_translate("MainWindow", "INGRESA EL PIN "))
         self.B_Loggin.setText(_translate("MainWindow", "Ingresar"))
 
