@@ -25,7 +25,6 @@ def openGaleria():
     imgHome=Image.open("IMG/home.png")
     imgHome=imgHome.resize((50,50))
     imgHome= ImageTk.PhotoImage(imgHome)
-
     B_exit=Button(rootV,image=imgHome,text='exit program',command=rootV.destroy)
 
 

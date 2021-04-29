@@ -63,13 +63,14 @@ class Worker(QObject):
                 self.updHora.emit()
                 self.Ht.setDates()
                 datetime = QDateTime.currentDateTime()
-                HoraVideo=self.setting.readFile()
+                #HoraVideo=self.setting.readFile()
                 #print(duration)
-                
-                if (datetime.date()==self.Ht.ui.dateTimeC1.date()and
-                datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
-                datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and#):#and
-                datetime.time().second()==self.Ht.ui.dateTimeC1.time().second())or\
+                condicionC1= (datetime.date()==self.Ht.ui.dateTimeC1.date()and
+                    datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
+                    datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and#):#and
+                    datetime.time().second()==self.Ht.ui.dateTimeC1.time().second())
+
+                if (condicionC1)or\
                 (datetime.date()==self.Ht.ui.dateTimeC2.date()and
                 datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
                 datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
@@ -366,9 +367,9 @@ class Ht(QMainWindow):
         except Exception as e:
                 print(e)
                 
-    def create_Inicio_window(self):
-        self.Inicio=Inicio()
-        self.Inicio.show()
+    #def create_Inicio_window(self):
+        #self.Inicio=Inicio()
+        #self.Inicio.show()
 
     def Change2(self,CurrentDT):
         self.ui.dateTimeC2.setMinimumDateTime(CurrentDT)
