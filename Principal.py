@@ -1,4 +1,5 @@
 import sys
+import subprocess
 import time
 import RPi.GPIO as GPIO
 import pygame
@@ -14,7 +15,7 @@ from tkinter import *
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import pyqtSignal,QUrl,pyqtSlot,QDate, QTime, QObject,QDateTime, Qt, QThread, QCoreApplication
-from PyQt5.QtWidgets import QWidget, QLabel, QApplication,QMainWindow,QPushButton,QHBoxLayout,QVBoxLayout
+from PyQt5.QtWidgets import QWidget, QLineEdit,QLabel, QApplication,QMainWindow,QPushButton,QHBoxLayout,QVBoxLayout
 from PyQt5.QtGui import QImage,QPixmap
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
@@ -37,6 +38,7 @@ video = cv2.VideoCapture(VIDEO_PATH)
 frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
 fps = video.get(cv2.CAP_PROP_FPS)
 duration = frame_count/fps
+
 global signal
 signal=True
 
@@ -65,16 +67,29 @@ class Worker(QObject):
                 datetime = QDateTime.currentDateTime()
                 #HoraVideo=self.setting.readFile()
                 #print(duration)
-                condicionC1= (datetime.date()==self.Ht.ui.dateTimeC1.date()and
-                    datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and
-                    datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and#):#and
-                    datetime.time().second()==self.Ht.ui.dateTimeC1.time().second())
-
-                if (condicionC1)or\
-                (datetime.date()==self.Ht.ui.dateTimeC2.date()and
-                datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and
-                datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and#):#and
-                datetime.time().second()==self.Ht.ui.dateTimeC2.time().second()):
+                condicionC1= (datetime.date()==self.Ht.ui.dateTimeC1.date()and\
+                              datetime.time().hour()==self.Ht.ui.dateTimeC1.time().hour()and\
+                              datetime.time().minute()==self.Ht.ui.dateTimeC1.time().minute()and\
+                              datetime.time().second()==self.Ht.ui.dateTimeC1.time().second())
+                condicionC2=(datetime.date()==self.Ht.ui.dateTimeC2.date()and\
+                              datetime.time().hour()==self.Ht.ui.dateTimeC2.time().hour()and\
+                              datetime.time().minute()==self.Ht.ui.dateTimeC2.time().minute()and\
+                              datetime.time().second()==self.Ht.ui.dateTimeC2.time().second())
+                condicionC3=(datetime.date()==self.Ht.ui.dateTimeC3.date()and\
+                              datetime.time().hour()==self.Ht.ui.dateTimeC3.time().hour()and\
+                              datetime.time().minute()==self.Ht.ui.dateTimeC3.time().minute()and\
+                              datetime.time().second()==self.Ht.ui.dateTimeC3.time().second())
+                condicionC4=(datetime.date()==self.Ht.ui.dateTimeC4.date()and\
+                              datetime.time().hour()==self.Ht.ui.dateTimeC4.time().hour()and\
+                              datetime.time().minute()==self.Ht.ui.dateTimeC4.time().minute()and\
+                              datetime.time().second()==self.Ht.ui.dateTimeC4.time().second())
+                condicionC5=(datetime.date()==self.Ht.ui.dateTimeC5.date()and\
+                              datetime.time().hour()==self.Ht.ui.dateTimeC5.time().hour()and\
+                              datetime.time().minute()==self.Ht.ui.dateTimeC5.time().minute()and\
+                              datetime.time().second()==self.Ht.ui.dateTimeC5.time().second())
+                
+                if (condicionC1 or condicionC2 or condicionC3 or
+                    condicionC4 or condicionC5):
                     
                     ActServo=self.ActDispense(datetime)
                     
@@ -84,7 +99,7 @@ class Worker(QObject):
                 datetime.time().second()==self.Ht.ui.dateTimeC6.time().second()):
                     
                     ActServo=self.ActDispense(datetime)
-                    ActC7=datetime.addSecs(60)#3600
+                    ActC7=datetime.addSecs(120)#3600
                     print(ActC7)
                 
                 if (datetime.date()==ActServo.date()and
@@ -93,7 +108,7 @@ class Worker(QObject):
                 datetime.time().second()==ActServo.time().second()):
                     
                     print('yes claro')
-                    servito.run()
+                    #servito.run()
                     
                     #time.sleep(10)
                 if (datetime.date()==ActC7.date()and
@@ -102,7 +117,7 @@ class Worker(QObject):
                 datetime.time().second()==ActC7.time().second()):
                     
                     print('Compartimento7')
-                    movMotor.run()
+                    #movMotor.run()
                     self.RechargeReminder.show()
                     # Mostrar pantalla de cargar 
                     #time.sleep(10)
@@ -114,13 +129,13 @@ class Worker(QObject):
     def ActDispense(self,datetime):
         
         print('yes')
-        movMotor.run()
+        #movMotor.run()
         #time.sleep(2)
         self.Reminder.show()
         pygame.mixer.init()
         pygame.mixer.music.load("/home/pi/Music/alarm-clock.mp3")
         pygame.mixer.music.play()
-        ActServo=datetime.addSecs(30)
+        ActServo=datetime.addSecs(60)
         print(ActServo)
         time.sleep(10)
         return ActServo
@@ -141,16 +156,18 @@ class WorkerVideo(QObject):
             try:
                                
                 datetime = QDateTime.currentDateTime()
-                HoraVideo=self.setting.readFile()
+                HoraVideo,clave=self.setting.readFile()
                 #print(duration)
-                #print(int(datetime.time().minute()),int(HoraVideo[1]) )   
-                if (int(datetime.time().hour())==int(HoraVideo[0]) and\
-                    int(datetime.time().minute())==int(HoraVideo[1])):
-                    
-                    #print("entra")
-                    self.VideoCap.show()
-                    time.sleep(duration+2)
-                    signal=False
+                #print(int(datetime.time().minute())==int(HoraVideo[1]) )
+                condicion1=bool(int(HoraVideo[0])==int(datetime.time().hour()))
+                condicion2=bool(int(HoraVideo[1])==int(datetime.time().minute()))
+                #print (condicion2)
+                if condicion1 :#and condicion2:
+                    if condicion2 :
+                        print("entra")
+                        self.VideoCap.show()
+                        time.sleep(duration+2)
+                        signal=False
                 
                 if (signal==False) :
                     self.VideoCap.close()
@@ -205,7 +222,9 @@ class Inicio(QMainWindow):
       
     def openMultimedia(self):
         ventanaEmergente.run()
-      
+        
+
+        
 class Ht_pin(QMainWindow):
     def __init__(self,var):
         super(Ht_pin, self).__init__()
@@ -218,13 +237,15 @@ class Ht_pin(QMainWindow):
         self.ui.B_Loggin.clicked.connect(lambda:self.Compare(var))
         #self.ui.B_Home.clicked.connect(self.create_Inicio_window)
         self.ui.B_Home.clicked.connect(lambda:self.close())
+        #self.ui.lineEdit=MatchBoxLineEdit()
         
     def Compare(self,var):
+        print()
         fname = open(PinFile, 'r')
         Pin= fname.read()
-        print(Pin)
+        #print(Pin)
         if str(self.ui.lineEdit.text())==str(Pin):
-            #print('otra vez este hpta')
+                #print('otra vez este hpta')
             if var=='HT':
                 self.close()
                 self.create_Ht_window()
@@ -301,9 +322,11 @@ class VideoCap(QMainWindow):
         self.setCentralWidget(self.widget)
         
         # Reproducir el video.
-        self.media_player.play()
-        #print(self.media_player.EndOfMedia)
         self.media_player.setVolume(200)
+        self.media_player.play()
+        print("llegaaqui")
+        #print(self.media_player.EndOfMedia)
+        
         
                    
 class setting(QMainWindow):
@@ -313,12 +336,13 @@ class setting(QMainWindow):
         self.ui = Ui_setting()
 
         self.ui.setupUi(self)
-        HoraVideo=self.readFile()
+        HoraVideo,clave=self.readFile()
         #print(HoraVideo)
         try:
             self.ui.B_Save.clicked.connect(self.Save)
             self.ui.B_Home.clicked.connect(lambda:self.close())
-            
+            print(type(clave))
+            self.ui.lineEditPassword.setText((clave[0]))
             
         except Exception as e:
             print(e)
@@ -336,8 +360,10 @@ class setting(QMainWindow):
     def readFile(self):
         fname = open(filevideo, 'r')
         HoraVideo= fname.read().split(':')
+        ftext = open(PinFile, 'r')
+        clave= ftext.read().split(':')
         #print(Horas)
-        return HoraVideo
+        return HoraVideo,clave
         
             
 class Ht(QMainWindow):
@@ -346,6 +372,7 @@ class Ht(QMainWindow):
         self.ui = Ui_Ht()
 
         self.ui.setupUi(self)
+        Horas=self.readFile()
         Horas=self.readFile()
         try:
 
