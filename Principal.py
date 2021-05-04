@@ -7,7 +7,6 @@ import os
 import cv2
 import movMotor
 import servito
-import push
 import CorreoE
 import ventanaEmergente
 from tkinter import *
@@ -34,12 +33,7 @@ filename = "Horas.txt"
 filevideo="HVideo.txt"
 PinFile="PinFile.txt"
 
-VIDEO_PATH = "/media/pi/MORAMO/VIDEO(1)/AnimalesTiernos.mp4"
-video = cv2.VideoCapture(VIDEO_PATH)
-frame_count = video.get(cv2.CAP_PROP_FRAME_COUNT)
-fps = video.get(cv2.CAP_PROP_FPS)
-duration = frame_count/fps
-
+video_path = ("/media/pi/MORAMO/VIDEO(1)/reflexion.mp4")
 global signal
 signal=True
 
@@ -145,7 +139,7 @@ class WorkerVideo(QObject):
     
     def __init__(self):
         super(WorkerVideo, self).__init__()
-        self.VideoCap=VideoCap()
+        
         self.setting=setting()
         #self.videoVentana=videoVentana()'
         global signal
@@ -163,16 +157,9 @@ class WorkerVideo(QObject):
                 condicion1=bool(int(HoraVideo[0])==int(datetime.time().hour()))
                 condicion2=bool(int(HoraVideo[1])==int(datetime.time().minute()))
                 #print (condicion2)
-                if condicion1 :#and condicion2:
-                    if condicion2 :
-                        print("entra")
-                        self.VideoCap.show()
-                        time.sleep(duration+2)
-                        signal=False
-                
-                if (signal==False) :
-                    self.VideoCap.close()
-                 
+                if condicion1 and condicion2 :
+                    subprocess.call(['vlc', video_path,'--play-and-exit'])
+                    break
             except Exception as e:
                 print(e)
         
@@ -297,38 +284,7 @@ class RechargeReminder(QMainWindow):
             
             self.ui.B_Close.clicked.connect(self.close())
         except Exception as e:
-            print(e)
-class VideoCap(QMainWindow):        
-    def __init__(self):
-        super().__init__()
-        
-        # Controles principales para organizar la ventana.
-        self.widget = QWidget(self)
-        self.layout = QVBoxLayout()
-        self.bottom_layout = QHBoxLayout()
-        
-        # Control de reproducción de video de Qt.
-        self.video_widget = QVideoWidget(self)
-        self.media_player = QMediaPlayer()
-        self.media_player.setMedia(QMediaContent(QUrl.fromLocalFile(VIDEO_PATH)))
-        self.video_widget.resize(800,480)
-        self.media_player.setVideoOutput(self.video_widget)
-        # Personalizar la ventana.
-        
-        self.setWindowTitle("Reproductor de video")
-        self.resize(800, 480)
-        self.layout.setContentsMargins(0, 0, 0, 0)
-        self.bottom_layout.setContentsMargins(0, 0, 0, 0)
-        self.widget.setLayout(self.layout)
-        self.setCentralWidget(self.widget)
-        
-        # Reproducir el video.
-        self.media_player.setVolume(200)
-        self.media_player.play()
-        print("llegaaqui")
-        #print(self.media_player.EndOfMedia)
-        
-        
+            print(e)      
                    
 class setting(QMainWindow):
     def __init__(self):
