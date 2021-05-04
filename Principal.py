@@ -8,6 +8,7 @@ import cv2
 import movMotor
 import servito
 import push
+import CorreoE
 import ventanaEmergente
 from tkinter import *
 
@@ -202,7 +203,7 @@ class Inicio(QMainWindow):
 
             self.worker.updHora.connect(self.updateLabel)
             self.ui.B_Multimedia.clicked.connect(self.openMultimedia)
-            self.ui.B_Emg.clicked.connect(push.run)
+            self.ui.B_Emg.clicked.connect(CorreoE.run)
             
         except Exception as e:
             print(e)
