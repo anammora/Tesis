@@ -156,10 +156,11 @@ class WorkerVideo(QObject):
                 #print(int(datetime.time().minute())==int(HoraVideo[1]) )
                 condicion1=bool(int(HoraVideo[0])==int(datetime.time().hour()))
                 condicion2=bool(int(HoraVideo[1])==int(datetime.time().minute()))
+                condicion3=bool(int(HoraVideo[2])==int(datetime.time().second()))
                 #print (condicion2)
-                if condicion1 and condicion2 :
+                if condicion1 and condicion2 and condicion3:
                     subprocess.call(['vlc', video_path,'--play-and-exit'])
-                    break
+                    
             except Exception as e:
                 print(e)
         
